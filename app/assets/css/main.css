@@ -4,15 +4,39 @@
 @theme static {
   --font-sans: 'Public Sans', sans-serif;
 
-  --color-green-50: #EFFDF5;
-  --color-green-100: #D9FBE8;
-  --color-green-200: #B3F5D1;
-  --color-green-300: #75EDAE;
-  --color-green-400: #00DC82;
-  --color-green-500: #00C16A;
-  --color-green-600: #00A155;
-  --color-green-700: #007F45;
-  --color-green-800: #016538;
-  --color-green-900: #0A5331;
-  --color-green-950: #052E16;
+  --color-deposits-50: #eeeaff;
+  --color-deposits-100: #d6d1ff;
+  --color-deposits-200: #aaa0fd;
+  --color-deposits-300: #7b6bf9;
+  --color-deposits-400: #4f39f6;
+  --color-deposits-500: #3b22f5;
+  --color-deposits-600: #2d13f5;
+  --color-deposits-700: #1f08db;
+  --color-deposits-800: #1705c5;
+  --color-deposits-900: #0b01ad;
+  --color-deposits-950: #050097;
+
+  --color-bonds-50: #f6e9ff;
+  --color-bonds-100: #e5cfff;
+  --color-bonds-200: #c69bff;
+  --color-bonds-300: #a665ff;
+  --color-bonds-400: #8b36fe;
+  --color-bonds-500: #7f22fe;
+  --color-bonds-600: #7108ff;
+  --color-bonds-700: #6000e4;
+  --color-bonds-800: #5400cc;
+  --color-bonds-900: #4800b4;
+  --color-bonds-950: #2e0080;
+
+  --color-stocks-50: #ffe7f0;
+  --color-stocks-100: #ffcedb;
+  --color-stocks-200: #ff9ab3;
+  --color-stocks-300: #ff638a;
+  --color-stocks-400: #ff3666;
+  --color-stocks-500: #ff2056;
+  --color-stocks-600: #ff0244;
+  --color-stocks-700: #e50036;
+  --color-stocks-800: #cd002f;
+  --color-stocks-900: #b40027;
+  --color-stocks-950: #7a0019;
 }
