@@ -1,0 +1,29 @@
+{
+  "logotype": {
+    "title": "profitability.ru",
+    "tagline": "Your financial analyst"
+  },
+  "header": {
+    "signIn": "Sign in"
+  },
+  "breadcrumb": {
+    "tools": "Tools",
+    "deposits": "Deposits",
+    "bonds": "Bonds",
+    "stocks": "Stocks"
+  },
+  "toolItem": {
+    "deposits": {
+      "label": "Deposit",
+      "description": "Deposit yield calculation"
+    },
+    "bonds": {
+      "label": "Bond",
+      "description": "Yield to maturity (YTM)"
+    },
+    "stocks": {
+      "label": "Stock",
+      "description": "Dividends and price growth"
+    }
+  }
+}

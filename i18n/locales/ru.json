@@ -1,0 +1,29 @@
+{
+  "logotype": {
+    "title": "профитабилити.ру",
+    "tagline": "Ваш финансовый аналитик"
+  },
+  "header": {
+    "signIn": "Войти"
+  },
+  "breadcrumb": {
+    "tools": "Инструменты",
+    "deposits": "Депозиты",
+    "bonds": "Облигации",
+    "stocks": "Акции"
+  },
+  "toolItem": {
+    "deposits": {
+      "label": "Депозит",
+      "description": "Расчёт доходности по вкладу"
+    },
+    "bonds": {
+      "label": "Облигация",
+      "description": "Доходность к погашению (YTM)"
+    },
+    "stocks": {
+      "label": "Акция",
+      "description": "Дивиденды и рост стоимости"
+    }
+  }
+}
