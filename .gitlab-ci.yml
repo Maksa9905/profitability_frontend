@@ -1,0 +1,34 @@
+stages:
+  - quality
+
+.node_pnpm: &node_pnpm
+  image: node:22-alpine
+  cache:
+    key:
+      files:
+        - pnpm-lock.yaml
+    paths:
+      - .pnpm-store
+  before_script:
+    - corepack enable
+    - corepack prepare pnpm@10.32.1 --activate
+    - pnpm config set store-dir .pnpm-store
+    - pnpm install --frozen-lockfile
+
+lint:
+  <<: *node_pnpm
+  stage: quality
+  script:
+    - pnpm run lint
+
+typecheck:
+  <<: *node_pnpm
+  stage: quality
+  script:
+    - pnpm run typecheck
+
+unit_tests:
+  <<: *node_pnpm
+  stage: quality
+  script:
+    - pnpm run test
