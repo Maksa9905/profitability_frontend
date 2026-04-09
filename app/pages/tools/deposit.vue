@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { EPrimaryColor, PrimaryColorProvider } from '~/features/dynamical-primary-color';
-import { InvestmentCalculatorBanner } from '~/features/investment-tools';
 
 </script>
 

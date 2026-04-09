@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { EPrimaryColor } from '../model/types'
+import type { EPrimaryColor } from '../model/types'
 
-const { color = null } = defineProps<{
-  color: EPrimaryColor
+const { color } = defineProps<{
+  color?: EPrimaryColor
 }>()
 </script>
 
