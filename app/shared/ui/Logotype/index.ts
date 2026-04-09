@@ -1,3 +1,3 @@
-import Logotype from "./Logotype.vue";
+import Logotype from './Logotype.vue'
 
-export default Logotype;
+export default Logotype

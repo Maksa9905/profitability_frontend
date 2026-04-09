@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { EPrimaryColor, PrimaryColorProvider } from '~/features/dynamical-primary-color';
-
+import {
+  EPrimaryColor,
+  PrimaryColorProvider
+} from '~/features/dynamical-primary-color'
 </script>
 
 <template>
-    <PrimaryColorProvider :color='EPrimaryColor.DEPOSITS'>
-    </PrimaryColorProvider>
+  <PrimaryColorProvider :color="EPrimaryColor.DEPOSITS"> </PrimaryColorProvider>
 </template>

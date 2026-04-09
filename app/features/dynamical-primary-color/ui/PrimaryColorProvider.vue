@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { EPrimaryColor } from '../model/types';
+import { EPrimaryColor } from '../model/types'
 
 const { color = null } = defineProps<{
-  color: EPrimaryColor;
-}>();
+  color: EPrimaryColor
+}>()
 </script>
 
 <template>
-  <div :class='["primary-color-provider", color]'>
+  <div :class="['primary-color-provider', color]">
     <slot />
   </div>
 </template>
