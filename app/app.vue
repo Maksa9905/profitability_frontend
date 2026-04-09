@@ -1,5 +1,7 @@
 <script setup>
 import Logotype from './shared/ui/Logotype'
+import Navigation from './widgets/navigation'
+import PageContainer from './widgets/page-container'
 
 const title = 'Nuxt Starter Template'
 const description =
@@ -18,15 +20,26 @@ useSeoMeta({
         <Logotype />
       </template>
 
+      <template #default>
+        <Navigation />
+      </template>
+
       <template #right>
-        <UButton color="neutral" icon="i-lucide-user" variant="ghost" size="sm">
-          Войти
+        <UButton
+          color="neutral"
+          icon="i-lucide-user"
+          variant="ghost"
+          size="md"
+        >
+          {{ $t("header.signIn") }}
         </UButton>
       </template>
     </UHeader>
 
     <UMain>
-      <NuxtPage />
+      <PageContainer>
+        <NuxtPage />
+      </PageContainer>
     </UMain>
   </UApp>
 </template>
