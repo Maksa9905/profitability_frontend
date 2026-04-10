@@ -44,5 +44,5 @@ export default defineNuxtConfig({
       cookieKey: 'i18n_locale',
       redirectOn: 'all'
     }
-  },
+  }
 })

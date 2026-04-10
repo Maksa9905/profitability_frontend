@@ -10,8 +10,7 @@ export function resolveUiPrimaryForChart(
   if (import.meta.server || !hostElement) {
     return ''
   }
-  const scope =
-    hostElement.closest('.primary-color-provider') ?? hostElement
+  const scope = hostElement.closest('.primary-color-provider') ?? hostElement
   const fromProvider = getComputedStyle(scope)
     .getPropertyValue('--ui-primary')
     .trim()

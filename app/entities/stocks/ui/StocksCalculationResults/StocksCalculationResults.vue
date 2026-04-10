@@ -44,10 +44,7 @@ const dividendSharePercent = computed(() => shareOfTotal(props.dividendIncome))
 const capitalGainSharePercent = computed(() => shareOfTotal(props.capitalGain))
 
 onMounted(() => {
-  const resolved = resolveUiPrimaryForChart(
-    rootRef.value,
-    '--color-stocks-400'
-  )
+  const resolved = resolveUiPrimaryForChart(rootRef.value, '--color-stocks-400')
   if (resolved) {
     chartLineColor.value = resolved
   }
@@ -90,10 +87,7 @@ onMounted(() => {
       "
     />
 
-    <div
-      v-if="portfolioGrowthGraph.length > 0"
-      class="stocks-portfolio-chart"
-    >
+    <div v-if="portfolioGrowthGraph.length > 0" class="stocks-portfolio-chart">
       <h3 class="stocks-portfolio-chart-title">
         {{ $t('toolItem.stocks.chart.title') }}
       </h3>

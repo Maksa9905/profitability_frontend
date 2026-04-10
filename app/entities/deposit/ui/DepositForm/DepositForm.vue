@@ -72,34 +72,36 @@ const frequencyOptions = useDepositFrequencyOptions()
 
       <USeparator />
 
-      <div class="flex gap-2 flex-col"><div class="flex justify-between items-center">
-        <USwitch
-          v-model="form.capitalization"
-          class="form-capitalization"
-          :label="$t('toolItem.deposits.form.capitalization.label')"
-        />
-        <UTooltip
-          :text="$t('toolItem.deposits.form.capitalization.tooltip')"
-          ><UIcon name="i-lucide-info"
-        /></UTooltip>
-      </div>
+      <div class="flex gap-2 flex-col">
+        <div class="flex justify-between items-center">
+          <USwitch
+            v-model="form.capitalization"
+            class="form-capitalization"
+            :label="$t('toolItem.deposits.form.capitalization.label')"
+          />
+          <UTooltip :text="$t('toolItem.deposits.form.capitalization.tooltip')"
+            ><UIcon name="i-lucide-info"
+          /></UTooltip>
+        </div>
 
-      <UCollapsible
-        v-model:open="form.capitalization"
-      >
-        <template #content>
-          <UFormField
-            :label="$t('toolItem.deposits.form.capitalizationFrequency.label')"
-          >
-            <USelect
-              v-model="form.frequency"
-              :placeholder="$t('toolItem.deposits.form.frequency.placeholder')"
-              class="w-full"
-              :items="frequencyOptions"
-            />
-          </UFormField>
-        </template>
-      </UCollapsible>
+        <UCollapsible v-model:open="form.capitalization">
+          <template #content>
+            <UFormField
+              :label="
+                $t('toolItem.deposits.form.capitalizationFrequency.label')
+              "
+            >
+              <USelect
+                v-model="form.frequency"
+                :placeholder="
+                  $t('toolItem.deposits.form.frequency.placeholder')
+                "
+                class="w-full"
+                :items="frequencyOptions"
+              />
+            </UFormField>
+          </template>
+        </UCollapsible>
       </div>
     </form>
   </section>

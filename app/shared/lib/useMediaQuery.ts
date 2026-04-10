@@ -4,7 +4,6 @@ export function useMediaQuery(query: string) {
   const matches = ref(false)
 
   watchEffect((onInvalidate) => {
-
     if (typeof window === 'undefined') {
       return
     }

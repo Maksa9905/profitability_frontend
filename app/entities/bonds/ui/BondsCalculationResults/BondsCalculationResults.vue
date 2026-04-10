@@ -74,10 +74,7 @@ onMounted(() => {
       value="—"
     />
 
-    <div
-      v-if="couponPaymentsGraph.length > 0"
-      class="bonds-coupon-chart"
-    >
+    <div v-if="couponPaymentsGraph.length > 0" class="bonds-coupon-chart">
       <h3 class="bonds-coupon-chart-title">
         {{ $t('toolItem.bonds.chart.title') }}
       </h3>

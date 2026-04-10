@@ -58,7 +58,9 @@ export function useStocksPortfolioLineChart(
       },
       yAxis: {
         type: 'value',
-        name: isMobile.value ? undefined : t('toolItem.stocks.chart.axisPortfolio'),
+        name: isMobile.value
+          ? undefined
+          : t('toolItem.stocks.chart.axisPortfolio'),
         nameLocation: isMobile.value ? undefined : 'middle',
         nameGap: isMobile.value ? undefined : 60,
         axisLabel: {

@@ -26,7 +26,7 @@ const mockCapitalGrowthGraph = Array.from({ length: 12 }, (_, i) =>
       </template>
       <template #visualization>
         <DepositCalculationResults
-        :item="InvestmentTool.ResultItemContainer"
+          :item="InvestmentTool.ResultItemContainer"
           :final-amount="100000"
           :accrued-interest="10000"
           :effective-rate="10"

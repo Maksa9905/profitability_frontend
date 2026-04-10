@@ -78,8 +78,7 @@ export function getBondCouponPeriodLabels(
   if (frequency === 'SEMI_ANNUALLY') {
     const y = now.getFullYear()
     const m = now.getMonth()
-    const start =
-      m < 6 ? new Date(y, 0, 1) : new Date(y, 6, 1)
+    const start = m < 6 ? new Date(y, 0, 1) : new Date(y, 6, 1)
     start.setHours(0, 0, 0, 0)
     for (let i = 0; i < pointCount; i++) {
       labels.push(formatSemiAnnual(addMonths(start, i * 6), locale))

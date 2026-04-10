@@ -40,7 +40,9 @@ export function useDepositCapitalLineChart(
         type: 'category',
         boundaryGap: false,
         data: xData,
-        name: isMobile.value ? undefined : t('toolItem.deposits.chart.axisMonth'),
+        name: isMobile.value
+          ? undefined
+          : t('toolItem.deposits.chart.axisMonth'),
         nameLocation: isMobile.value ? undefined : 'middle',
         nameGap: isMobile.value ? undefined : 36,
         splitLine: {
@@ -53,7 +55,9 @@ export function useDepositCapitalLineChart(
       },
       yAxis: {
         type: 'value',
-        name: isMobile.value ? undefined : t('toolItem.deposits.chart.axisCapital'),
+        name: isMobile.value
+          ? undefined
+          : t('toolItem.deposits.chart.axisCapital'),
         nameLocation: isMobile.value ? undefined : 'middle',
         nameGap: isMobile.value ? undefined : 60,
         axisLabel: {

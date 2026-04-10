@@ -10,7 +10,9 @@ import {
 } from '~/features/dynamical-primary-color'
 import { InvestmentTool } from '~/features/investment-tools'
 
-const mockCouponPaymentsGraph = [20, 30, 40, 50, 60, 70, 190, 20, 30, 40, 50, 60, 70, 190]
+const mockCouponPaymentsGraph = [
+  20, 30, 40, 50, 60, 70, 190, 20, 30, 40, 50, 60, 70, 190
+]
 </script>
 
 <template>

@@ -62,7 +62,9 @@ export function useBondsCouponLineChart(
       },
       yAxis: {
         type: 'value',
-        name: isMobile.value ? undefined : t('toolItem.bonds.chart.axisPayment'),
+        name: isMobile.value
+          ? undefined
+          : t('toolItem.bonds.chart.axisPayment'),
         nameLocation: isMobile.value ? undefined : 'middle',
         nameGap: isMobile.value ? undefined : 44,
         axisLabel: {

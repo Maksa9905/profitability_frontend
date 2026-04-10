@@ -34,12 +34,11 @@ defineProps<{
 .calculation-results-item[data-active='true'] {
   background-color: var(--ui-primary);
 
-  .calculation-results-item-title, 
+  .calculation-results-item-title,
   .calculation-results-item-description,
   .calculation-results-item-value {
     color: white;
   }
-
 }
 
 .calculation-results-item-title {
