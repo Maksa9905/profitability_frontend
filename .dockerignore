@@ -1,0 +1,8 @@
+node_modules
+.git
+.pnpm-store
+.output
+.nuxt
+dist
+.env
+.env.*

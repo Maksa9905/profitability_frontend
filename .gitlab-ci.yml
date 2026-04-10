@@ -1,5 +1,7 @@
 stages:
   - quality
+  - build
+  - deploy
 
 .node_pnpm: &node_pnpm
   image: node:22-alpine
@@ -32,3 +34,27 @@ unit_tests:
   stage: quality
   script:
     - pnpm run test
+
+build:
+  stage: build
+  before_script:
+    - docker --version
+    - docker compose version
+  script:
+    - printenv > .env.prod
+    - docker compose -f docker-compose.prod.yml --env-file .env.prod build profitability-frontend
+    - docker compose -f docker-compose.prod.yml --env-file .env.prod run --rm --no-deps profitability-frontend ls /app/.output/server/index.mjs
+    - rm -f .env.prod
+
+deploy:
+  stage: deploy
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "master"'
+  before_script:
+    - docker --version
+    - docker compose version
+  script:
+    - if [ -n "$ENV_PROD_FILE" ] && [ -f "$ENV_PROD_FILE" ]; then cp "$ENV_PROD_FILE" .env.prod; else printenv > .env.prod; fi
+    - docker compose -f docker-compose.prod.yml --env-file .env.prod up -d --build --wait profitability-frontend
+    - docker run --rm --network host curlimages/curl:8.10.1 -fsS "http://127.0.0.1:${FRONTEND_BIND_PORT:-13030}/" > /dev/null
+    - rm -f .env.prod

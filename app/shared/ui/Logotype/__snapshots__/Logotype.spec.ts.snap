@@ -3,23 +3,25 @@
 exports[`Logotype > should render logotype text 1`] = `
 <div
   class="logotype"
+  data-v-f160b3d7=""
 >
   <div
     class="logotype__mark"
+    data-v-f160b3d7=""
   >
     <span
-      aria-hidden="true"
-      class="iconify i-lucide:chart-bar logotype__icon"
-      style="font-size: 24px;"
+      data-v-f160b3d7=""
     />
   </div>
   <h1
     class="logotype__title"
+    data-v-f160b3d7=""
   >
     профитабилити.ру
   </h1>
   <p
     class="logotype__tagline"
+    data-v-f160b3d7=""
   >
     Ваш финансовый аналитик
   </p>
