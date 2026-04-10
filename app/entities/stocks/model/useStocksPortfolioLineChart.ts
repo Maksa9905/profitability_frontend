@@ -3,6 +3,7 @@ import { computed, type Ref } from 'vue'
 
 import type { EStockFrequency } from './types'
 import { getStocksPortfolioPeriodLabels } from '../lib/getStocksPortfolioPeriodLabels'
+import { useMediaQuery } from '~/shared/lib/useMediaQuery'
 
 function localeTag(code: string): string {
   return code === 'en' ? 'en-US' : 'ru-RU'
@@ -14,6 +15,7 @@ export function useStocksPortfolioLineChart(
   lineColor: Ref<string>
 ) {
   const { locale, t } = useI18n()
+  const isMobile = useMediaQuery('(max-width: 768px)')
 
   const chartOption = computed((): ECOption => {
     const values = portfolioGrowthGraph.value
@@ -33,19 +35,19 @@ export function useStocksPortfolioLineChart(
         trigger: 'axis'
       },
       grid: {
-        left: 48,
-        right: 24,
-        top: 40,
-        bottom: 56,
-        containLabel: true
+        left: isMobile.value ? 16 : 24,
+        right: isMobile.value ? 16 : 24,
+        top: isMobile.value ? 16 : 24,
+        bottom: isMobile.value ? 16 : 30,
+        containLabel: isMobile.value ? false : true
       },
       xAxis: {
         type: 'category',
         boundaryGap: false,
         data: xData,
-        name: t('toolItem.stocks.chart.axisTime'),
-        nameLocation: 'middle',
-        nameGap: 36,
+        name: isMobile.value ? undefined : t('toolItem.stocks.chart.axisTime'),
+        nameLocation: isMobile.value ? undefined : 'middle',
+        nameGap: isMobile.value ? undefined : 36,
         splitLine: {
           show: true,
           lineStyle: { opacity: 0.25 }
@@ -56,9 +58,9 @@ export function useStocksPortfolioLineChart(
       },
       yAxis: {
         type: 'value',
-        name: t('toolItem.stocks.chart.axisPortfolio'),
-        nameLocation: 'middle',
-        nameGap: 60,
+        name: isMobile.value ? undefined : t('toolItem.stocks.chart.axisPortfolio'),
+        nameLocation: isMobile.value ? undefined : 'middle',
+        nameGap: isMobile.value ? undefined : 60,
         axisLabel: {
           formatter: (v: number) => nf.format(v)
         },

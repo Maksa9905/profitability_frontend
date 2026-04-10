@@ -146,4 +146,19 @@ onMounted(() => {
   width: 100%;
   height: 340px;
 }
+
+@media (max-width: 768px) {
+  .stocks-calculation-results {
+    grid-template-columns: 1fr;
+  }
+
+  .stocks-portfolio-chart {
+    grid-column: 1;
+    grid-row: 4;
+  }
+
+  .stocks-portfolio-chart-title {
+    font-size: 0.875rem;
+  }
+}
 </style>

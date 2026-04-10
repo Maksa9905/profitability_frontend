@@ -123,4 +123,15 @@ onMounted(() => {
   width: 100%;
   height: 340px;
 }
+
+@media (max-width: 576px) {
+  .deposit-calculation-results {
+    grid-template-columns: 1fr;
+  }
+
+  .deposit-capital-chart {
+    grid-column: 1;
+    grid-row: 5;
+  }
+}
 </style>

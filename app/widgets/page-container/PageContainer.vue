@@ -21,4 +21,10 @@
   margin: 0 auto;
   height: 100%;
 }
+
+@media (max-width: 768px) {
+  .page-container {
+    padding-inline: calc(var(--spacing) * 4);
+  }
+}
 </style>

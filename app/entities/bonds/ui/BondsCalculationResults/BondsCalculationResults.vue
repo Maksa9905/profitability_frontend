@@ -130,4 +130,19 @@ onMounted(() => {
   width: 100%;
   height: 340px;
 }
+
+@media (max-width: 576px) {
+  .bonds-calculation-results {
+    grid-template-columns: 1fr;
+  }
+
+  .bonds-coupon-chart {
+    grid-column: 1;
+    grid-row: 5;
+  }
+
+  .bonds-coupon-chart-title {
+    font-size: 0.875rem;
+  }
+}
 </style>

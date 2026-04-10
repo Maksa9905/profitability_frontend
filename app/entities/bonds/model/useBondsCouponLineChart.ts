@@ -1,6 +1,7 @@
 import { useI18n } from '#imports'
 import { computed, type Ref } from 'vue'
 
+import { useMediaQuery } from '~/shared/lib/useMediaQuery'
 import type { components } from '~/shared/api/generated/invest'
 
 import type { EBondFrequency } from './types'
@@ -18,6 +19,7 @@ export function useBondsCouponLineChart(
   lineColor: Ref<string>
 ) {
   const { locale, t } = useI18n()
+  const isMobile = useMediaQuery('(max-width: 768px)')
 
   const chartOption = computed((): ECOption => {
     const values = couponPaymentsGraph.value
@@ -37,19 +39,19 @@ export function useBondsCouponLineChart(
         trigger: 'axis'
       },
       grid: {
-        left: 48,
-        right: 24,
-        top: 40,
-        bottom: 56,
-        containLabel: true
+        left: isMobile.value ? 16 : 24,
+        right: isMobile.value ? 16 : 24,
+        top: isMobile.value ? 16 : 24,
+        bottom: isMobile.value ? 16 : 30,
+        containLabel: isMobile.value ? false : true
       },
       xAxis: {
         type: 'category',
         boundaryGap: false,
         data: xData,
-        name: t('toolItem.bonds.chart.axisTime'),
-        nameLocation: 'middle',
-        nameGap: 36,
+        name: isMobile.value ? undefined : t('toolItem.bonds.chart.axisTime'),
+        nameLocation: isMobile.value ? undefined : 'middle',
+        nameGap: isMobile.value ? undefined : 36,
         splitLine: {
           show: true,
           lineStyle: { opacity: 0.25 }
@@ -60,9 +62,9 @@ export function useBondsCouponLineChart(
       },
       yAxis: {
         type: 'value',
-        name: t('toolItem.bonds.chart.axisPayment'),
-        nameLocation: 'middle',
-        nameGap: 44,
+        name: isMobile.value ? undefined : t('toolItem.bonds.chart.axisPayment'),
+        nameLocation: isMobile.value ? undefined : 'middle',
+        nameGap: isMobile.value ? undefined : 44,
         axisLabel: {
           formatter: (v: number) => nf.format(v)
         },
