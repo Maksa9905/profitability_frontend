@@ -17,7 +17,9 @@ useSeoMeta({
   <UApp>
     <UHeader>
       <template #left>
-        <Logotype />
+        <NuxtLink to="/stocks">
+          <Logotype />
+        </NuxtLink>
       </template>
 
       <template #default>

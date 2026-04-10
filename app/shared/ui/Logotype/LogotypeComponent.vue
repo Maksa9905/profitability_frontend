@@ -1,13 +1,13 @@
 <script lang="ts" setup></script>
 
 <template>
-  <NuxtLink to="/stocks" class="logotype">
+  <div class="logotype">
     <div class="logotype__mark">
       <UIcon size="24px" name="i-lucide-chart-bar" class="logotype__icon" />
     </div>
     <h1 class="logotype__title">{{ $t('logotype.title') }}</h1>
     <p class="logotype__tagline">{{ $t('logotype.tagline') }}</p>
-  </NuxtLink>
+  </div>
 </template>
 
 <style scoped>

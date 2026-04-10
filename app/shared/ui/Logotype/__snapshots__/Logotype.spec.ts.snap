@@ -1,33 +1,27 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Logotype > should render logotype text 1`] = `
-<a
+<div
   class="logotype"
-  data-v-a721e3c4=""
-  href="/stocks"
 >
   <div
     class="logotype__mark"
-    data-v-a721e3c4=""
   >
     <span
       aria-hidden="true"
       class="iconify i-lucide:chart-bar logotype__icon"
-      data-v-a721e3c4=""
       style="font-size: 24px;"
     />
   </div>
   <h1
     class="logotype__title"
-    data-v-a721e3c4=""
   >
     профитабилити.ру
   </h1>
   <p
     class="logotype__tagline"
-    data-v-a721e3c4=""
   >
     Ваш финансовый аналитик
   </p>
-</a>
+</div>
 `;
