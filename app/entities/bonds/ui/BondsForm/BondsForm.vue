@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import { bondIcon } from '../../lib/constants'
+import { createBondsFormSchema } from '../../model/bondsFormSchema'
 import { useBondsFrequencyOptions } from '../../model/options'
 import type { IBondsForm } from '../../model/types'
 
 const { locale } = useI18n()
 
-const form = ref<IBondsForm>({
+const state = reactive<IBondsForm>({
   nominal: undefined,
   purchasePricePercent: undefined,
   couponRate: undefined,
@@ -15,11 +16,13 @@ const form = ref<IBondsForm>({
   isCustomRate: false
 })
 
+const schema = computed(() => createBondsFormSchema())
+
 const frequencyOptions = useBondsFrequencyOptions()
 
 const purchasePriceHintAmount = computed(() => {
-  const n = form.value.nominal
-  const p = form.value.purchasePricePercent
+  const n = state.nominal
+  const p = state.purchasePricePercent
   if (n == null || p == null) {
     return ''
   }
@@ -37,10 +40,19 @@ const purchasePriceHintAmount = computed(() => {
       <h2 class="form-title">{{ $t('toolItem.bonds.form.title') }}</h2>
     </header>
 
-    <form class="form-content">
-      <UFormField :label="$t('toolItem.bonds.form.nominal.label')">
+    <UForm
+      id="bonds-investment-form"
+      :schema="schema"
+      :state="state"
+      class="form-content"
+    >
+      <UFormField
+        :error="false"
+        name="nominal"
+        :label="$t('toolItem.bonds.form.nominal.label')"
+      >
         <UInput
-          v-model="form.nominal"
+          v-model="state.nominal"
           :placeholder="$t('toolItem.bonds.form.nominal.placeholder')"
           trailing-icon="i-lucide-russian-ruble"
           type="number"
@@ -48,9 +60,13 @@ const purchasePriceHintAmount = computed(() => {
         />
       </UFormField>
 
-      <UFormField :label="$t('toolItem.bonds.form.purchasePricePercent.label')">
+      <UFormField
+        :error="false"
+        name="purchasePricePercent"
+        :label="$t('toolItem.bonds.form.purchasePricePercent.label')"
+      >
         <UInput
-          v-model="form.purchasePricePercent"
+          v-model="state.purchasePricePercent"
           :placeholder="
             $t('toolItem.bonds.form.purchasePricePercent.placeholder')
           "
@@ -58,7 +74,7 @@ const purchasePriceHintAmount = computed(() => {
           type="number"
           class="form-input"
         />
-        <template v-if="form.nominal && form.purchasePricePercent" #help>
+        <template v-if="state.nominal && state.purchasePricePercent" #help>
           <p class="text-sm text-muted">
             {{
               $t('toolItem.bonds.form.purchasePricePercent.help', {
@@ -69,9 +85,13 @@ const purchasePriceHintAmount = computed(() => {
         </template>
       </UFormField>
 
-      <UFormField :label="$t('toolItem.bonds.form.couponRate.label')">
+      <UFormField
+        :error="false"
+        name="couponRate"
+        :label="$t('toolItem.bonds.form.couponRate.label')"
+      >
         <UInput
-          v-model="form.couponRate"
+          v-model="state.couponRate"
           :placeholder="$t('toolItem.bonds.form.couponRate.placeholder')"
           trailing-icon="i-lucide-percent"
           type="number"
@@ -79,18 +99,26 @@ const purchasePriceHintAmount = computed(() => {
         />
       </UFormField>
 
-      <UFormField :label="$t('toolItem.bonds.form.frequency.label')">
+      <UFormField
+        :error="false"
+        name="frequency"
+        :label="$t('toolItem.bonds.form.frequency.label')"
+      >
         <USelect
-          v-model="form.frequency"
+          v-model="state.frequency"
           :placeholder="$t('toolItem.bonds.form.frequency.placeholder')"
           class="w-full"
           :items="frequencyOptions"
         />
       </UFormField>
 
-      <UFormField :label="$t('toolItem.bonds.form.termMonths.label')">
+      <UFormField
+        :error="false"
+        name="termMonths"
+        :label="$t('toolItem.bonds.form.termMonths.label')"
+      >
         <UInput
-          v-model="form.termMonths"
+          v-model="state.termMonths"
           :placeholder="$t('toolItem.bonds.form.termMonths.placeholder')"
           class="form-input"
         />
@@ -98,16 +126,20 @@ const purchasePriceHintAmount = computed(() => {
 
       <USeparator />
 
-      <UFormField :label="$t('toolItem.bonds.form.taxRate.label')">
+      <UFormField
+        :error="false"
+        name="taxRate"
+        :label="$t('toolItem.bonds.form.taxRate.label')"
+      >
         <UInput
-          v-model="form.taxRate"
+          v-model="state.taxRate"
           :placeholder="$t('toolItem.bonds.form.taxRate.placeholder')"
           trailing-icon="i-lucide-percent"
           type="number"
           class="form-input"
         />
       </UFormField>
-    </form>
+    </UForm>
   </section>
 </template>
 

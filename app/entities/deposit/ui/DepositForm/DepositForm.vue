@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { depositeIcon, interestRates } from '../../lib/constants'
+import { createDepositFormSchema } from '../../model/depositFormSchema'
 import { useDepositFrequencyOptions } from '../../model/options'
 import type { IDepositForm } from '../../model/types'
 
@@ -7,13 +8,15 @@ defineSlots<{
   form: () => VNode
 }>()
 
-const form = ref<IDepositForm>({
+const state = reactive<IDepositForm>({
   amount: undefined,
   interestRate: undefined,
   termMonths: undefined,
   capitalization: false,
   frequency: undefined
 })
+
+const schema = computed(() => createDepositFormSchema())
 
 const frequencyOptions = useDepositFrequencyOptions()
 </script>
@@ -25,10 +28,19 @@ const frequencyOptions = useDepositFrequencyOptions()
       <h2 class="form-title">{{ $t('toolItem.deposits.form.title') }}</h2>
     </header>
 
-    <form class="form-content">
-      <UFormField :label="$t('toolItem.deposits.form.amount.label')">
+    <UForm
+      id="deposit-investment-form"
+      :schema="schema"
+      :state="state"
+      class="form-content"
+    >
+      <UFormField
+        :error="false"
+        name="amount"
+        :label="$t('toolItem.deposits.form.amount.label')"
+      >
         <UInput
-          v-model="form.amount"
+          v-model="state.amount"
           :placeholder="$t('toolItem.deposits.form.amount.placeholder')"
           trailing-icon="i-lucide-russian-ruble"
           type="number"
@@ -36,9 +48,13 @@ const frequencyOptions = useDepositFrequencyOptions()
         />
       </UFormField>
 
-      <UFormField :label="$t('toolItem.deposits.form.interestRate.label')">
+      <UFormField
+        :error="false"
+        name="interestRate"
+        :label="$t('toolItem.deposits.form.interestRate.label')"
+      >
         <UInput
-          v-model="form.interestRate"
+          v-model="state.interestRate"
           :placeholder="$t('toolItem.deposits.form.interestRate.placeholder')"
           trailing-icon="i-lucide-percent"
           type="number"
@@ -50,10 +66,10 @@ const frequencyOptions = useDepositFrequencyOptions()
               v-for="interestRate in interestRates"
               :key="interestRate"
               :variant="
-                form.interestRate === interestRate ? 'solid' : 'outline'
+                state.interestRate === interestRate ? 'solid' : 'outline'
               "
               size="xs"
-              @click="form.interestRate = interestRate"
+              @click="state.interestRate = interestRate"
             >
               {{ interestRate }}%
             </UButton>
@@ -61,9 +77,13 @@ const frequencyOptions = useDepositFrequencyOptions()
         </template>
       </UFormField>
 
-      <UFormField :label="$t('toolItem.deposits.form.termMonths.label')">
+      <UFormField
+        :error="false"
+        name="termMonths"
+        :label="$t('toolItem.deposits.form.termMonths.label')"
+      >
         <UInput
-          v-model="form.termMonths"
+          v-model="state.termMonths"
           :placeholder="$t('toolItem.deposits.form.termMonths.placeholder')"
           type="number"
           class="form-input"
@@ -75,7 +95,7 @@ const frequencyOptions = useDepositFrequencyOptions()
       <div class="flex gap-2 flex-col">
         <div class="flex justify-between items-center">
           <USwitch
-            v-model="form.capitalization"
+            v-model="state.capitalization"
             class="form-capitalization"
             :label="$t('toolItem.deposits.form.capitalization.label')"
           />
@@ -84,15 +104,17 @@ const frequencyOptions = useDepositFrequencyOptions()
           /></UTooltip>
         </div>
 
-        <UCollapsible v-model:open="form.capitalization">
+        <UCollapsible v-model:open="state.capitalization">
           <template #content>
             <UFormField
+              :error="false"
+              name="frequency"
               :label="
                 $t('toolItem.deposits.form.capitalizationFrequency.label')
               "
             >
               <USelect
-                v-model="form.frequency"
+                v-model="state.frequency"
                 :placeholder="
                   $t('toolItem.deposits.form.frequency.placeholder')
                 "
@@ -103,7 +125,7 @@ const frequencyOptions = useDepositFrequencyOptions()
           </template>
         </UCollapsible>
       </div>
-    </form>
+    </UForm>
   </section>
 </template>
 

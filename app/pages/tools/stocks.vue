@@ -14,6 +14,7 @@ import { InvestmentTool } from '~/features/investment-tools'
 <template>
   <PrimaryColorProvider :color="EPrimaryColor.STOCKS">
     <InvestmentTool
+      calculate-form-id="stocks-investment-form"
       :title="$t('toolItem.stocks.label')"
       :description="$t('toolItem.stocks.description')"
     >

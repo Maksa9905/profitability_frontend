@@ -18,6 +18,7 @@ const mockCapitalGrowthGraph = Array.from({ length: 12 }, (_, i) =>
 <template>
   <PrimaryColorProvider :color="EPrimaryColor.DEPOSITS">
     <InvestmentTool
+      calculate-form-id="deposit-investment-form"
       :title="$t('toolItem.deposits.label')"
       :description="$t('toolItem.deposits.description')"
     >

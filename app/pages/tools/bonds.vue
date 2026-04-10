@@ -18,6 +18,7 @@ const mockCouponPaymentsGraph = [
 <template>
   <PrimaryColorProvider :color="EPrimaryColor.BONDS">
     <InvestmentTool
+      calculate-form-id="bonds-investment-form"
       :title="$t('toolItem.bonds.label')"
       :description="$t('toolItem.bonds.description')"
     >

@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { stocksIcon } from '../../lib/constants'
+import { createStocksFormSchema } from '../../model/stocksFormSchema'
 import type { IStocksForm } from '../../model/types'
 import { useStocksFrequencyOptions } from '../../model/useStocksFrequencyOptions'
 
-const form = ref<IStocksForm>({
+const state = reactive<IStocksForm>({
   purchasePrice: undefined,
   targetPrice: undefined,
   holdingMonths: undefined,
@@ -13,6 +14,8 @@ const form = ref<IStocksForm>({
   taxRate: undefined,
   withCommission: false
 })
+
+const schema = computed(() => createStocksFormSchema())
 
 const frequencyOptions = useStocksFrequencyOptions()
 </script>
@@ -24,10 +27,19 @@ const frequencyOptions = useStocksFrequencyOptions()
       <h2 class="form-title">{{ $t('toolItem.stocks.form.title') }}</h2>
     </header>
 
-    <form class="form-content">
-      <UFormField :label="$t('toolItem.stocks.form.purchasePrice.label')">
+    <UForm
+      id="stocks-investment-form"
+      :schema="schema"
+      :state="state"
+      class="form-content"
+    >
+      <UFormField
+        :error="false"
+        name="purchasePrice"
+        :label="$t('toolItem.stocks.form.purchasePrice.label')"
+      >
         <UInput
-          v-model="form.purchasePrice"
+          v-model="state.purchasePrice"
           :placeholder="$t('toolItem.stocks.form.purchasePrice.placeholder')"
           type="number"
           trailing-icon="i-lucide-russian-ruble"
@@ -35,9 +47,13 @@ const frequencyOptions = useStocksFrequencyOptions()
         />
       </UFormField>
 
-      <UFormField :label="$t('toolItem.stocks.form.targetPrice.label')">
+      <UFormField
+        :error="false"
+        name="targetPrice"
+        :label="$t('toolItem.stocks.form.targetPrice.label')"
+      >
         <UInput
-          v-model="form.targetPrice"
+          v-model="state.targetPrice"
           :placeholder="$t('toolItem.stocks.form.targetPrice.placeholder')"
           trailing-icon="i-lucide-russian-ruble"
           type="number"
@@ -45,9 +61,13 @@ const frequencyOptions = useStocksFrequencyOptions()
         />
       </UFormField>
 
-      <UFormField :label="$t('toolItem.stocks.form.holdingMonths.label')">
+      <UFormField
+        :error="false"
+        name="holdingMonths"
+        :label="$t('toolItem.stocks.form.holdingMonths.label')"
+      >
         <UInput
-          v-model="form.holdingMonths"
+          v-model="state.holdingMonths"
           :placeholder="$t('toolItem.stocks.form.holdingMonths.placeholder')"
           type="number"
           class="form-input"
@@ -55,9 +75,13 @@ const frequencyOptions = useStocksFrequencyOptions()
         />
       </UFormField>
 
-      <UFormField :label="$t('toolItem.stocks.form.dividendRate.label')">
+      <UFormField
+        :error="false"
+        name="dividendRate"
+        :label="$t('toolItem.stocks.form.dividendRate.label')"
+      >
         <UInput
-          v-model="form.dividendRate"
+          v-model="state.dividendRate"
           :placeholder="$t('toolItem.stocks.form.dividendRate.placeholder')"
           type="number"
           class="form-input"
@@ -65,9 +89,13 @@ const frequencyOptions = useStocksFrequencyOptions()
         />
       </UFormField>
 
-      <UFormField :label="$t('toolItem.stocks.form.frequency.label')">
+      <UFormField
+        :error="false"
+        name="frequency"
+        :label="$t('toolItem.stocks.form.frequency.label')"
+      >
         <USelect
-          v-model="form.frequency"
+          v-model="state.frequency"
           :placeholder="$t('toolItem.stocks.form.frequency.placeholder')"
           class="w-full"
           trailing-icon="i-lucide-calendar"
@@ -77,21 +105,21 @@ const frequencyOptions = useStocksFrequencyOptions()
 
       <USeparator />
 
-      <div class="flex flex-col gap-1">
-        <UButton
-          variant="ghost"
-          size="sm"
-          @click="form.withCommission = !form.withCommission"
-        >
-          <UIcon name="i-lucide-percent" />
-          <span>{{ $t('toolItem.stocks.form.commission.toggle') }}</span>
-        </UButton>
+      <div class="flex flex-col gap-2">
+        <USwitch
+          v-model="state.withCommission"
+          :label="$t('toolItem.stocks.form.commission.toggle')"
+        />
 
-        <UCollapsible v-model:open="form.withCommission">
+        <UCollapsible v-model:open="state.withCommission">
           <template #content>
-            <UFormField :label="$t('toolItem.stocks.form.commission.label')">
+            <UFormField
+              :error="false"
+              name="commission"
+              :label="$t('toolItem.stocks.form.commission.label')"
+            >
               <UInput
-                v-model="form.commission"
+                v-model="state.commission"
                 :placeholder="$t('toolItem.stocks.form.commission.placeholder')"
                 type="number"
                 class="w-full"
@@ -100,7 +128,7 @@ const frequencyOptions = useStocksFrequencyOptions()
           </template>
         </UCollapsible>
       </div>
-    </form>
+    </UForm>
   </section>
 </template>
 
