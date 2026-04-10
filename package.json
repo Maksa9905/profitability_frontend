@@ -2,6 +2,9 @@
   "name": "profitability-frontend",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
@@ -13,7 +16,15 @@
     "typecheck": "nuxt typecheck",
     "test": "vitest run",
     "openapi:types": "openapi-typescript openapi/auth.json -o app/shared/api/generated/auth.ts && openapi-typescript openapi/invest.json -o app/shared/api/generated/invest.ts",
-    "openapi:docs": "node scripts/generate-api-docs-html.mjs"
+    "openapi:docs": "node scripts/generate-api-docs-html.mjs",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,mjs,cjs,ts,vue}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.{json,css,md,yml,yaml}": "prettier --write"
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.98",
@@ -32,6 +43,8 @@
     "eslint": "^10.0.3",
     "eslint-config-prettier": "^10.1.8",
     "happy-dom": "^20.8.9",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
     "openapi-typescript": "^7.13.0",
     "prettier": "^3.8.1",
     "typescript": "^5.9.3",
