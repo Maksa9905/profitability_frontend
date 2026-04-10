@@ -21,6 +21,7 @@ defineProps<{
       <div class="investment_tool__form">
         <slot name="form" />
         <UButton block>{{ $t('investmentTools.calculate') }}</UButton>
+        <UButton block variant="outline">{{ $t('investmentTools.save') }}</UButton>
       </div>
       <div class="investment_tool__visualization">
         <slot name="visualization" />

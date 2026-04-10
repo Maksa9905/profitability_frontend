@@ -125,7 +125,7 @@ onMounted(() => {
 }
 
 @media (max-width: 576px) {
-  .deposit-calculation-results {
+.deposit-calculation-results {
     grid-template-columns: 1fr;
   }
 

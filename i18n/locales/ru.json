@@ -163,6 +163,7 @@
     }
   },
   "investmentTools": {
-    "calculate": "Рассчитать"
+    "calculate": "Рассчитать",
+    "save": "Сохранить расчёт"
   }
 }
