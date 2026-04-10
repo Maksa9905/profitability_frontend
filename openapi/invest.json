@@ -1,1 +1,513 @@
-{"openapi":"3.1.0","info":{"title":"OpenAPI definition","version":"v0"},"servers":[{"url":"http://localhost:8082","description":"Generated server url"}],"paths":{"/api/investment/stock/add":{"post":{"tags":["investment-controller"],"summary":"Добавить расчёт по акциям","description":"Расчёт доходности акций с учётом целевой цены, дивидендов, налога и графика роста портфеля.","operationId":"calculateStock","parameters":[{"name":"X-Auth-User-Id","in":"header","required":true,"description":"Идентификатор пользователя (UUID)","schema":{"type":"string","format":"uuid"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/StockRequest"}}}},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/StockResponse"}}}}}}},"/api/investment/deposit/add":{"post":{"tags":["investment-controller"],"summary":"Добавить расчёт по вкладу","description":"Итоговая сумма, проценты, эффективная ставка и график капитализации.","operationId":"calculateDeposit","parameters":[{"name":"X-Auth-User-Id","in":"header","required":true,"description":"Идентификатор пользователя (UUID)","schema":{"type":"string","format":"uuid"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/DepositRequest"}}}},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/DepositResponse"}}}}}}},"/api/investment/bond/add":{"post":{"tags":["investment-controller"],"summary":"Добавить расчёт по облигации","description":"YTM, чистая доходность, прибыль и график купонных выплат.","operationId":"calculateBond","parameters":[{"name":"X-Auth-User-Id","in":"header","required":true,"description":"Идентификатор пользователя (UUID)","schema":{"type":"string","format":"uuid"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/BondRequest"}}}},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/BondResponse"}}}}}}},"/api/investment/stock/list":{"get":{"tags":["investment-controller"],"summary":"Список расчётов по акциям","description":"История позиций пользователя.","operationId":"getStocks","parameters":[{"name":"X-Auth-User-Id","in":"header","required":true,"description":"Идентификатор пользователя (UUID)","schema":{"type":"string","format":"uuid"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/StockHistoryResponse"}}}}}}}},"/api/investment/deposit/list":{"get":{"tags":["investment-controller"],"summary":"Список расчётов по вкладам","operationId":"getDeposits","parameters":[{"name":"X-Auth-User-Id","in":"header","required":true,"description":"Идентификатор пользователя (UUID)","schema":{"type":"string","format":"uuid"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/DepositHistoryResponse"}}}}}}}},"/api/investment/bond/list":{"get":{"tags":["investment-controller"],"summary":"Список расчётов по облигациям","operationId":"getBonds","parameters":[{"name":"X-Auth-User-Id","in":"header","required":true,"description":"Идентификатор пользователя (UUID)","schema":{"type":"string","format":"uuid"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/BondHistoryResponse"}}}}}}}}},"components":{"schemas":{"BondHistoryResponse":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"title":{"type":"string"},"nominal":{"type":"number"},"purchasePricePercent":{"type":"number"},"couponRate":{"type":"number"},"termMonths":{"type":"integer","format":"int32"},"taxRate":{"type":"number"},"frequency":{"type":"string","enum":["MONTHLY","QUARTERLY","SEMI_ANNUALLY","ANNUALLY"]},"ytm":{"type":"number"},"netYield":{"type":"number"},"totalProfitAmount":{"type":"number"},"totalProfitPercent":{"type":"number"},"createdAt":{"type":"string","format":"date-time"}},"required":["couponRate","createdAt","frequency","id","netYield","nominal","purchasePricePercent","taxRate","termMonths","title","totalProfitAmount","totalProfitPercent","ytm"]},"BondRequest":{"type":"object","properties":{"title":{"type":"string","minLength":0,"maxLength":20},"nominal":{"type":"number","minimum":0.0},"purchasePricePercent":{"type":"number","minimum":0.0,"maximum":200.0},"couponRate":{"type":"number","minimum":0.0},"frequency":{"type":"string","enum":["MONTHLY","QUARTERLY","SEMI_ANNUALLY","ANNUALLY"]},"termMonths":{"type":"integer","format":"int32","minimum":1,"description":"Срок до погашения, мес."},"taxRate":{"type":"number","minimum":0.0,"maximum":100.0}},"required":["couponRate","frequency","nominal","purchasePricePercent","taxRate","termMonths","title"]},"BondResponse":{"type":"object","properties":{"title":{"type":"string"},"ytm":{"type":"number"},"netYield":{"type":"number"},"totalProfitAmount":{"type":"number"},"totalProfitPercent":{"type":"number"},"frequency":{"type":"string","enum":["MONTHLY","QUARTERLY","SEMI_ANNUALLY","ANNUALLY"]},"couponPaymentsGraph":{"type":"array","items":{"type":"number"}}},"required":["couponPaymentsGraph","frequency","netYield","title","totalProfitAmount","totalProfitPercent","ytm"]},"DepositHistoryResponse":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"title":{"type":"string"},"amount":{"type":"number"},"interestRate":{"type":"number"},"termMonths":{"type":"integer","format":"int32"},"capitalization":{"type":"boolean"},"frequency":{"type":"string","enum":["MONTHLY","QUARTERLY","SEMI_ANNUALLY","ANNUALLY"]},"finalAmount":{"type":"number"},"accruedInterest":{"type":"number"},"effectiveRate":{"type":"number"},"createdAt":{"type":"string","format":"date-time"}},"required":["accruedInterest","amount","capitalization","createdAt","effectiveRate","finalAmount","frequency","id","interestRate","termMonths","title"]},"DepositRequest":{"type":"object","properties":{"title":{"type":"string","minLength":0,"maxLength":20},"amount":{"type":"number","minimum":0.0},"interestRate":{"type":"number","minimum":0.0},"termMonths":{"type":"integer","format":"int32","minimum":1},"capitalization":{"type":"boolean"},"frequency":{"type":"string","enum":["MONTHLY","QUARTERLY","SEMI_ANNUALLY","ANNUALLY"]}},"required":["amount","capitalization","frequency","interestRate","termMonths","title"]},"DepositResponse":{"type":"object","properties":{"title":{"type":"string"},"finalAmount":{"type":"number"},"accruedInterest":{"type":"number"},"effectiveRate":{"type":"number"},"frequency":{"type":"string","enum":["MONTHLY","QUARTERLY","SEMI_ANNUALLY","ANNUALLY"]},"capitalGrowthGraph":{"type":"array","items":{"type":"number"}}},"required":["accruedInterest","capitalGrowthGraph","effectiveRate","finalAmount","frequency","title"]},"StockHistoryResponse":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"title":{"type":"string"},"purchasePrice":{"type":"number"},"targetPrice":{"type":"number"},"holdingMonths":{"type":"integer","format":"int32"},"dividendRate":{"type":"number"},"commission":{"type":"number"},"frequency":{"type":"string","enum":["MONTHLY","QUARTERLY","SEMI_ANNUALLY","ANNUALLY"]},"totalYieldPercent":{"type":"number"},"totalYieldAmount":{"type":"number"},"dividendIncome":{"type":"number"},"capitalGain":{"type":"number"},"netYield":{"type":"number"},"createdAt":{"type":"string","format":"date-time"}},"required":["capitalGain","commission","createdAt","dividendIncome","dividendRate","frequency","holdingMonths","id","netYield","purchasePrice","targetPrice","title","totalYieldAmount","totalYieldPercent"]},"StockRequest":{"type":"object","properties":{"title":{"type":"string","minLength":0,"maxLength":20,"description":"Название позиции"},"purchasePrice":{"type":"number","minimum":0.0,"description":"Цена покупки"},"targetPrice":{"type":"number","minimum":0.0,"description":"Целевая (текущая) цена для расчёта"},"holdingMonths":{"type":"integer","format":"int32","minimum":1,"description":"Срок владения, мес."},"dividendRate":{"type":"number","minimum":0.0,"description":"Дивидендная ставка"},"frequency":{"type":"string","enum":["MONTHLY","QUARTERLY","SEMI_ANNUALLY","ANNUALLY"],"description":"Периодичность выплат"},"commission":{"type":"number","minimum":0.0,"description":"Комиссия"},"taxRate":{"type":"number","minimum":0.0,"maximum":100.0,"description":"Налог, %"}},"required":["commission","dividendRate","frequency","holdingMonths","purchasePrice","targetPrice","taxRate","title"]},"StockResponse":{"type":"object","properties":{"title":{"type":"string"},"totalYieldPercent":{"type":"number"},"totalYieldAmount":{"type":"number"},"netYield":{"type":"number"},"capitalGain":{"type":"number"},"dividendIncome":{"type":"number"},"frequency":{"type":"string","enum":["MONTHLY","QUARTERLY","SEMI_ANNUALLY","ANNUALLY"]},"portfolioGrowthGraph":{"type":"array","items":{"type":"number"},"description":"Точки графика роста портфеля"}},"required":["capitalGain","dividendIncome","frequency","netYield","portfolioGrowthGraph","title","totalYieldAmount","totalYieldPercent"]}}}}
+{
+  "openapi": "3.1.0",
+  "info": { "title": "OpenAPI definition", "version": "v0" },
+  "servers": [
+    { "url": "http://localhost:8082", "description": "Generated server url" }
+  ],
+  "paths": {
+    "/api/investment/stock/add": {
+      "post": {
+        "tags": ["investment-controller"],
+        "summary": "Добавить расчёт по акциям",
+        "description": "Расчёт доходности акций с учётом целевой цены, дивидендов, налога и графика роста портфеля.",
+        "operationId": "calculateStock",
+        "parameters": [
+          {
+            "name": "X-Auth-User-Id",
+            "in": "header",
+            "required": true,
+            "description": "Идентификатор пользователя (UUID)",
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/StockRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/StockResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/investment/deposit/add": {
+      "post": {
+        "tags": ["investment-controller"],
+        "summary": "Добавить расчёт по вкладу",
+        "description": "Итоговая сумма, проценты, эффективная ставка и график капитализации.",
+        "operationId": "calculateDeposit",
+        "parameters": [
+          {
+            "name": "X-Auth-User-Id",
+            "in": "header",
+            "required": true,
+            "description": "Идентификатор пользователя (UUID)",
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/DepositRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/DepositResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/investment/bond/add": {
+      "post": {
+        "tags": ["investment-controller"],
+        "summary": "Добавить расчёт по облигации",
+        "description": "YTM, чистая доходность, прибыль и график купонных выплат.",
+        "operationId": "calculateBond",
+        "parameters": [
+          {
+            "name": "X-Auth-User-Id",
+            "in": "header",
+            "required": true,
+            "description": "Идентификатор пользователя (UUID)",
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/BondRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/BondResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/investment/stock/list": {
+      "get": {
+        "tags": ["investment-controller"],
+        "summary": "Список расчётов по акциям",
+        "description": "История позиций пользователя.",
+        "operationId": "getStocks",
+        "parameters": [
+          {
+            "name": "X-Auth-User-Id",
+            "in": "header",
+            "required": true,
+            "description": "Идентификатор пользователя (UUID)",
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StockHistoryResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/investment/deposit/list": {
+      "get": {
+        "tags": ["investment-controller"],
+        "summary": "Список расчётов по вкладам",
+        "operationId": "getDeposits",
+        "parameters": [
+          {
+            "name": "X-Auth-User-Id",
+            "in": "header",
+            "required": true,
+            "description": "Идентификатор пользователя (UUID)",
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DepositHistoryResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/investment/bond/list": {
+      "get": {
+        "tags": ["investment-controller"],
+        "summary": "Список расчётов по облигациям",
+        "operationId": "getBonds",
+        "parameters": [
+          {
+            "name": "X-Auth-User-Id",
+            "in": "header",
+            "required": true,
+            "description": "Идентификатор пользователя (UUID)",
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BondHistoryResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BondHistoryResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "title": { "type": "string" },
+          "nominal": { "type": "number" },
+          "purchasePricePercent": { "type": "number" },
+          "couponRate": { "type": "number" },
+          "termMonths": { "type": "integer", "format": "int32" },
+          "taxRate": { "type": "number" },
+          "frequency": {
+            "type": "string",
+            "enum": ["MONTHLY", "QUARTERLY", "SEMI_ANNUALLY", "ANNUALLY"]
+          },
+          "ytm": { "type": "number" },
+          "netYield": { "type": "number" },
+          "totalProfitAmount": { "type": "number" },
+          "totalProfitPercent": { "type": "number" },
+          "createdAt": { "type": "string", "format": "date-time" }
+        },
+        "required": [
+          "couponRate",
+          "createdAt",
+          "frequency",
+          "id",
+          "netYield",
+          "nominal",
+          "purchasePricePercent",
+          "taxRate",
+          "termMonths",
+          "title",
+          "totalProfitAmount",
+          "totalProfitPercent",
+          "ytm"
+        ]
+      },
+      "BondRequest": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "minLength": 0, "maxLength": 20 },
+          "nominal": { "type": "number", "minimum": 0.0 },
+          "purchasePricePercent": {
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 200.0
+          },
+          "couponRate": { "type": "number", "minimum": 0.0 },
+          "frequency": {
+            "type": "string",
+            "enum": ["MONTHLY", "QUARTERLY", "SEMI_ANNUALLY", "ANNUALLY"]
+          },
+          "termMonths": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 1,
+            "description": "Срок до погашения, мес."
+          },
+          "taxRate": { "type": "number", "minimum": 0.0, "maximum": 100.0 }
+        },
+        "required": [
+          "couponRate",
+          "frequency",
+          "nominal",
+          "purchasePricePercent",
+          "taxRate",
+          "termMonths",
+          "title"
+        ]
+      },
+      "BondResponse": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string" },
+          "ytm": { "type": "number" },
+          "netYield": { "type": "number" },
+          "totalProfitAmount": { "type": "number" },
+          "totalProfitPercent": { "type": "number" },
+          "frequency": {
+            "type": "string",
+            "enum": ["MONTHLY", "QUARTERLY", "SEMI_ANNUALLY", "ANNUALLY"]
+          },
+          "couponPaymentsGraph": {
+            "type": "array",
+            "items": { "type": "number" }
+          }
+        },
+        "required": [
+          "couponPaymentsGraph",
+          "frequency",
+          "netYield",
+          "title",
+          "totalProfitAmount",
+          "totalProfitPercent",
+          "ytm"
+        ]
+      },
+      "DepositHistoryResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "title": { "type": "string" },
+          "amount": { "type": "number" },
+          "interestRate": { "type": "number" },
+          "termMonths": { "type": "integer", "format": "int32" },
+          "capitalization": { "type": "boolean" },
+          "frequency": {
+            "type": "string",
+            "enum": ["MONTHLY", "QUARTERLY", "SEMI_ANNUALLY", "ANNUALLY"]
+          },
+          "finalAmount": { "type": "number" },
+          "accruedInterest": { "type": "number" },
+          "effectiveRate": { "type": "number" },
+          "createdAt": { "type": "string", "format": "date-time" }
+        },
+        "required": [
+          "accruedInterest",
+          "amount",
+          "capitalization",
+          "createdAt",
+          "effectiveRate",
+          "finalAmount",
+          "frequency",
+          "id",
+          "interestRate",
+          "termMonths",
+          "title"
+        ]
+      },
+      "DepositRequest": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "minLength": 0, "maxLength": 20 },
+          "amount": { "type": "number", "minimum": 0.0 },
+          "interestRate": { "type": "number", "minimum": 0.0 },
+          "termMonths": { "type": "integer", "format": "int32", "minimum": 1 },
+          "capitalization": { "type": "boolean" },
+          "frequency": {
+            "type": "string",
+            "enum": ["MONTHLY", "QUARTERLY", "SEMI_ANNUALLY", "ANNUALLY"]
+          }
+        },
+        "required": [
+          "amount",
+          "capitalization",
+          "frequency",
+          "interestRate",
+          "termMonths",
+          "title"
+        ]
+      },
+      "DepositResponse": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string" },
+          "finalAmount": { "type": "number" },
+          "accruedInterest": { "type": "number" },
+          "effectiveRate": { "type": "number" },
+          "frequency": {
+            "type": "string",
+            "enum": ["MONTHLY", "QUARTERLY", "SEMI_ANNUALLY", "ANNUALLY"]
+          },
+          "capitalGrowthGraph": {
+            "type": "array",
+            "items": { "type": "number" }
+          }
+        },
+        "required": [
+          "accruedInterest",
+          "capitalGrowthGraph",
+          "effectiveRate",
+          "finalAmount",
+          "frequency",
+          "title"
+        ]
+      },
+      "StockHistoryResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "title": { "type": "string" },
+          "purchasePrice": { "type": "number" },
+          "targetPrice": { "type": "number" },
+          "holdingMonths": { "type": "integer", "format": "int32" },
+          "dividendRate": { "type": "number" },
+          "commission": { "type": "number" },
+          "frequency": {
+            "type": "string",
+            "enum": ["MONTHLY", "QUARTERLY", "SEMI_ANNUALLY", "ANNUALLY"]
+          },
+          "totalYieldPercent": { "type": "number" },
+          "totalYieldAmount": { "type": "number" },
+          "dividendIncome": { "type": "number" },
+          "capitalGain": { "type": "number" },
+          "netYield": { "type": "number" },
+          "createdAt": { "type": "string", "format": "date-time" }
+        },
+        "required": [
+          "capitalGain",
+          "commission",
+          "createdAt",
+          "dividendIncome",
+          "dividendRate",
+          "frequency",
+          "holdingMonths",
+          "id",
+          "netYield",
+          "purchasePrice",
+          "targetPrice",
+          "title",
+          "totalYieldAmount",
+          "totalYieldPercent"
+        ]
+      },
+      "StockRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 20,
+            "description": "Название позиции"
+          },
+          "purchasePrice": {
+            "type": "number",
+            "minimum": 0.0,
+            "description": "Цена покупки"
+          },
+          "targetPrice": {
+            "type": "number",
+            "minimum": 0.0,
+            "description": "Целевая (текущая) цена для расчёта"
+          },
+          "holdingMonths": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 1,
+            "description": "Срок владения, мес."
+          },
+          "dividendRate": {
+            "type": "number",
+            "minimum": 0.0,
+            "description": "Дивидендная ставка"
+          },
+          "frequency": {
+            "type": "string",
+            "enum": ["MONTHLY", "QUARTERLY", "SEMI_ANNUALLY", "ANNUALLY"],
+            "description": "Периодичность выплат"
+          },
+          "commission": {
+            "type": "number",
+            "minimum": 0.0,
+            "description": "Комиссия"
+          },
+          "taxRate": {
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 100.0,
+            "description": "Налог, %"
+          }
+        },
+        "required": [
+          "commission",
+          "dividendRate",
+          "frequency",
+          "holdingMonths",
+          "purchasePrice",
+          "targetPrice",
+          "taxRate",
+          "title"
+        ]
+      },
+      "StockResponse": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string" },
+          "totalYieldPercent": { "type": "number" },
+          "totalYieldAmount": { "type": "number" },
+          "netYield": { "type": "number" },
+          "capitalGain": { "type": "number" },
+          "dividendIncome": { "type": "number" },
+          "frequency": {
+            "type": "string",
+            "enum": ["MONTHLY", "QUARTERLY", "SEMI_ANNUALLY", "ANNUALLY"]
+          },
+          "portfolioGrowthGraph": {
+            "type": "array",
+            "items": { "type": "number" },
+            "description": "Точки графика роста портфеля"
+          }
+        },
+        "required": [
+          "capitalGain",
+          "dividendIncome",
+          "frequency",
+          "netYield",
+          "portfolioGrowthGraph",
+          "title",
+          "totalYieldAmount",
+          "totalYieldPercent"
+        ]
+      }
+    }
+  }
+}

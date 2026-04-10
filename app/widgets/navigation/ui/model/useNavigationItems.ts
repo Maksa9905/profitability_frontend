@@ -1,19 +1,23 @@
+import { EToolItem, toolsIcons } from '~/features/investment-tools'
+
 export const useNavigationItems = () => {
+  const { t } = useI18n()
+
   return [
     {
-      label: $t('toolItem.deposits.label'),
-      icon: 'i-lucide-landmark',
-      to: '/tools/deposit',
+      label: t('toolItem.deposits.label'),
+      icon: toolsIcons[EToolItem.DEPOSIT],
+      to: '/tools/deposit'
     },
     {
-      label: $t('toolItem.bonds.label'),
-      icon: 'i-lucide-wallet',
-      to: '/tools/bonds',
+      label: t('toolItem.bonds.label'),
+      icon: toolsIcons[EToolItem.BOND],
+      to: '/tools/bonds'
     },
     {
-      label: $t('toolItem.stocks.label'),
-      icon: 'i-lucide-chart-candlestick',
-      to: '/tools/stocks',
-    },
-  ];
+      label: t('toolItem.stocks.label'),
+      icon: toolsIcons[EToolItem.STOCK],
+      to: '/tools/stocks'
+    }
+  ]
 }

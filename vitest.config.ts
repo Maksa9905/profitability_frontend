@@ -1,16 +1,16 @@
-import { defineVitestProject } from "@nuxt/test-utils/config";
+import { defineVitestProject } from '@nuxt/test-utils/config'
 
 export default defineVitestProject({
   test: {
-    environment: "nuxt",
+    environment: 'nuxt',
     environmentOptions: {
       nuxt: {
         overrides: {
           i18n: {
-            lazy: false,
-          },
-        },
-      },
-    },
-  },
-});
+            lazy: false
+          }
+        }
+      }
+    }
+  }
+})

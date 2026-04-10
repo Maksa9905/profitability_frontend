@@ -15,15 +15,154 @@
   "toolItem": {
     "deposits": {
       "label": "Депозит",
-      "description": "Расчёт доходности по вкладу"
+      "description": "Расчёт доходности по вкладу",
+      "form": {
+        "title": "Параметры вклада",
+        "amount": {
+          "label": "Сумма вклада",
+          "placeholder": "Сколько вы хотите вложить?"
+        },
+        "interestRate": {
+          "label": "Процентная ставка",
+          "placeholder": "Под сколько процентов?"
+        },
+        "termMonths": {
+          "label": "Срок вклада",
+          "placeholder": "Выберите срок вклада"
+        },
+        "capitalization": {
+          "label": "Капитализация",
+          "tooltip": "Начисление процентов на проценты"
+        },
+        "capitalizationFrequency": {
+          "label": "Частота капитализации"
+        },
+        "frequency": {
+          "placeholder": "Выберите частоту капитализации",
+          "MONTHLY": "Ежемесячно",
+          "QUARTERLY": "Ежеквартально",
+          "SEMI_ANNUALLY": "Раз в полгода",
+          "ANNUALLY": "Ежегодно"
+        }
+      },
+      "results": {
+        "finalAmount": "Итоговая сумма",
+        "accruedInterest": "Начисленные проценты",
+        "accruedInterestPeriod": "за весь период",
+        "effectiveRate": "Эффективная ставка",
+        "capitalizationNote": "с учётом капит."
+      },
+      "chart": {
+        "title": "Динамика капитала",
+        "axisMonth": "Месяц",
+        "axisCapital": "Капитал, ₽",
+        "capital": "Капитал"
+      }
     },
     "bonds": {
       "label": "Облигация",
-      "description": "Доходность к погашению (YTM)"
+      "description": "Доходность к погашению (YTM)",
+      "form": {
+        "title": "Параметры облигации",
+        "nominal": {
+          "label": "Номинал облигации",
+          "placeholder": "Сколько стоит облигация?"
+        },
+        "purchasePricePercent": {
+          "label": "Цена покупки (% от номинала)",
+          "placeholder": "Сколько вы заплатили за облигацию?",
+          "help": "Цена покупки: {amount} ₽"
+        },
+        "couponRate": {
+          "label": "Купонная ставка (% годовых)",
+          "placeholder": "Сколько процентов получаем с купона?"
+        },
+        "frequency": {
+          "label": "Частота выплат купонов",
+          "placeholder": "Как часто выплачиваются купоны?",
+          "MONTHLY": "Ежемесячно",
+          "QUARTERLY": "Ежеквартально",
+          "SEMI_ANNUALLY": "Раз в полгода",
+          "ANNUALLY": "Ежегодно"
+        },
+        "termMonths": {
+          "label": "Срок до погашения",
+          "placeholder": "Когда облигация будет погашена?"
+        },
+        "taxRate": {
+          "label": "Налог на доходы",
+          "placeholder": "Сколько процентов налога на доходы?"
+        }
+      },
+      "results": {
+        "ytm": "Доходность к погашению (YTM)",
+        "ytmHint": "годовая доходность",
+        "totalProfit": "Общая прибыль",
+        "totalProfitHint": "+{percent}% от вложений",
+        "netYield": "Доходность (чистая)",
+        "netYieldHint": "после уплаты налогов",
+        "couponPerYear": "Купонный доход за год",
+        "couponYearHint": "за 1 облигацию"
+      },
+      "chart": {
+        "title": "Купонные выплаты",
+        "axisTime": "Период",
+        "axisPayment": "Выплата, ₽",
+        "coupon": "Купон"
+      }
     },
     "stocks": {
       "label": "Акция",
-      "description": "Дивиденды и рост стоимости"
+      "description": "Дивиденды и рост стоимости",
+      "form": {
+        "title": "Параметры акции",
+        "purchasePrice": {
+          "label": "Цена покупки",
+          "placeholder": "Сколько стоит акция?"
+        },
+        "targetPrice": {
+          "label": "Прогнозная цена",
+          "placeholder": "За сколько вы хотите продать акции?"
+        },
+        "holdingMonths": {
+          "label": "Срок владения",
+          "placeholder": "Сколько месяцев вы планируете держать акции?"
+        },
+        "dividendRate": {
+          "label": "Дивидендная ставка",
+          "placeholder": "Сколько процентов вы получаете от дивидендов?"
+        },
+        "frequency": {
+          "label": "Частота выплат дивидендов",
+          "placeholder": "Как часто выплачиваются дивиденды?",
+          "MONTHLY": "Ежемесячно",
+          "QUARTERLY": "Ежеквартально",
+          "SEMI_ANNUALLY": "Раз в полгода",
+          "ANNUALLY": "Ежегодно"
+        },
+        "commission": {
+          "toggle": "Комиссия брокера",
+          "label": "Комиссия",
+          "placeholder": "Сколько вы платите за комиссию?"
+        }
+      },
+      "results": {
+        "totalYieldTitle": "Общая доходность за весь период",
+        "totalYieldHint": "+{percent}% от вложений",
+        "dividendTitle": "Прибыль от дивидендов",
+        "dividendHint": "{percent}% от общей суммы",
+        "capitalGainTitle": "Прибыль от роста стоимости",
+        "capitalGainHint": "{percent}% от общей суммы"
+      },
+      "chart": {
+        "title": "Динамика стоимости портфеля",
+        "axisTime": "Период",
+        "axisPortfolio": "Стоимость портфеля, ₽",
+        "portfolio": "Портфель"
+      }
     }
+  },
+  "investmentTools": {
+    "calculate": "Рассчитать"
   }
 }

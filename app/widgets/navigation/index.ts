@@ -1,3 +1,3 @@
-import Navigation from "./ui/Navigation";
+import Navigation from './ui/NavigationMenu'
 
-export default Navigation;
+export default Navigation

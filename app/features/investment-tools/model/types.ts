@@ -1,5 +1,5 @@
 export enum EToolItem {
-  DEPOSIT = "deposits",
-  BOND = "bonds",
-  STOCK = "stocks",
+  DEPOSIT = 'deposits',
+  BOND = 'bonds',
+  STOCK = 'stocks'
 }

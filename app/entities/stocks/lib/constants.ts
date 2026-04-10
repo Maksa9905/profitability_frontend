@@ -1,0 +1,1 @@
+export const stocksIcon = 'i-lucide-chart-candlestick'

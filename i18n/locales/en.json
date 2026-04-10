@@ -15,15 +15,154 @@
   "toolItem": {
     "deposits": {
       "label": "Deposit",
-      "description": "Deposit yield calculation"
+      "description": "Deposit yield calculation",
+      "form": {
+        "title": "Deposit parameters",
+        "amount": {
+          "label": "Deposit amount",
+          "placeholder": "How much do you want to deposit?"
+        },
+        "interestRate": {
+          "label": "Interest rate",
+          "placeholder": "Annual rate, %"
+        },
+        "termMonths": {
+          "label": "Term",
+          "placeholder": "Term in months"
+        },
+        "capitalization": {
+          "label": "Capitalization",
+          "tooltip": "Interest on interest"
+        },
+        "capitalizationFrequency": {
+          "label": "Capitalization frequency"
+        },
+        "frequency": {
+          "placeholder": "Select capitalization frequency",
+          "MONTHLY": "Monthly",
+          "QUARTERLY": "Quarterly",
+          "SEMI_ANNUALLY": "Semi-annually",
+          "ANNUALLY": "Annually"
+        }
+      },
+      "results": {
+        "finalAmount": "Final amount",
+        "accruedInterest": "Accrued interest",
+        "accruedInterestPeriod": "over the full term",
+        "effectiveRate": "Effective rate",
+        "capitalizationNote": "incl. capitalization"
+      },
+      "chart": {
+        "title": "Capital over time",
+        "axisMonth": "Month",
+        "axisCapital": "Capital, ₽",
+        "capital": "Capital"
+      }
     },
     "bonds": {
       "label": "Bond",
-      "description": "Yield to maturity (YTM)"
+      "description": "Yield to maturity (YTM)",
+      "form": {
+        "title": "Bond parameters",
+        "nominal": {
+          "label": "Face value",
+          "placeholder": "Face value in RUB"
+        },
+        "purchasePricePercent": {
+          "label": "Purchase price (% of face value)",
+          "placeholder": "Percent of face value",
+          "help": "Purchase price: {amount} ₽"
+        },
+        "couponRate": {
+          "label": "Coupon rate (% p.a.)",
+          "placeholder": "Annual coupon yield"
+        },
+        "frequency": {
+          "label": "Coupon payment frequency",
+          "placeholder": "How often coupons are paid?",
+          "MONTHLY": "Monthly",
+          "QUARTERLY": "Quarterly",
+          "SEMI_ANNUALLY": "Semi-annually",
+          "ANNUALLY": "Annually"
+        },
+        "termMonths": {
+          "label": "Time to maturity",
+          "placeholder": "Months to maturity"
+        },
+        "taxRate": {
+          "label": "Income tax",
+          "placeholder": "Tax rate, %"
+        }
+      },
+      "results": {
+        "ytm": "Yield to maturity (YTM)",
+        "ytmHint": "annual yield",
+        "totalProfit": "Total profit",
+        "totalProfitHint": "+{percent}% on invested amount",
+        "netYield": "Net yield",
+        "netYieldHint": "after taxes",
+        "couponPerYear": "Annual coupon income",
+        "couponYearHint": "per bond"
+      },
+      "chart": {
+        "title": "Coupon payments",
+        "axisTime": "Period",
+        "axisPayment": "Payment, ₽",
+        "coupon": "Coupon"
+      }
     },
     "stocks": {
       "label": "Stock",
-      "description": "Dividends and price growth"
+      "description": "Dividends and price growth",
+      "form": {
+        "title": "Stock parameters",
+        "purchasePrice": {
+          "label": "Purchase price",
+          "placeholder": "Price per share"
+        },
+        "targetPrice": {
+          "label": "Target price",
+          "placeholder": "Expected sale price per share"
+        },
+        "holdingMonths": {
+          "label": "Holding period",
+          "placeholder": "How many months will you hold the stock?"
+        },
+        "dividendRate": {
+          "label": "Dividend yield",
+          "placeholder": "Dividend yield, %"
+        },
+        "frequency": {
+          "label": "Dividend payment frequency",
+          "placeholder": "How often are dividends paid?",
+          "MONTHLY": "Monthly",
+          "QUARTERLY": "Quarterly",
+          "SEMI_ANNUALLY": "Semi-annually",
+          "ANNUALLY": "Annually"
+        },
+        "commission": {
+          "toggle": "Broker commission",
+          "label": "Commission",
+          "placeholder": "Commission amount or rate"
+        }
+      },
+      "results": {
+        "totalYieldTitle": "Total return over the period",
+        "totalYieldHint": "+{percent}% on invested amount",
+        "dividendTitle": "Dividend income",
+        "dividendHint": "{percent}% of total return",
+        "capitalGainTitle": "Capital gain",
+        "capitalGainHint": "{percent}% of total return"
+      },
+      "chart": {
+        "title": "Portfolio value over time",
+        "axisTime": "Period",
+        "axisPortfolio": "Portfolio value, ₽",
+        "portfolio": "Portfolio"
+      }
     }
+  },
+  "investmentTools": {
+    "calculate": "Calculate"
   }
 }

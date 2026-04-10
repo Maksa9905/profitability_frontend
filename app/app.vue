@@ -25,13 +25,8 @@ useSeoMeta({
       </template>
 
       <template #right>
-        <UButton
-          color="neutral"
-          icon="i-lucide-user"
-          variant="ghost"
-          size="md"
-        >
-          {{ $t("header.signIn") }}
+        <UButton color="neutral" icon="i-lucide-user" variant="ghost" size="md">
+          {{ $t('header.signIn') }}
         </UButton>
       </template>
     </UHeader>

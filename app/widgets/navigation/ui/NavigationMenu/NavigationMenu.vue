@@ -1,13 +1,14 @@
 <script lang="ts" setup>
-import { EPrimaryColor, PrimaryColorProvider } from '~/features/dynamical-primary-color';
-import { useNavigationItems } from '../model/useNavigationItems';
+import type { EPrimaryColor } from '~/features/dynamical-primary-color'
+import { PrimaryColorProvider } from '~/features/dynamical-primary-color'
+import { useNavigationItems } from '../model/useNavigationItems'
 
-const route = useRoute();
-const items = useNavigationItems();
+const route = useRoute()
+const items = useNavigationItems()
 
 const color = computed(() => {
-  return route.path.split('/')[2] as EPrimaryColor;
-});
+  return route.path.split('/')[2] as EPrimaryColor
+})
 </script>
 
 <template>

@@ -1,37 +1,53 @@
 <script setup lang="ts">
-import { EPrimaryColor, PrimaryColorProvider } from '~/features/dynamical-primary-color';
+import { DepositCalculationResults, DepositForm } from '~/entities/deposit'
 
+import {
+  EPrimaryColor,
+  PrimaryColorProvider
+} from '~/features/dynamical-primary-color'
+import { InvestmentTool } from '~/features/investment-tools'
+
+const frequency = 'MONTHLY'
+const capitalization = true
+
+const mockCapitalGrowthGraph = Array.from({ length: 12 }, (_, i) =>
+  Math.round(100_000 + (10_000 / 12) * (i + 1))
+)
 </script>
 
 <template>
-    <PrimaryColorProvider :color='EPrimaryColor.DEPOSITS'>
-        <div class="title-container">
-            <h1 class="title">{{$t('toolItem.deposits.label')}}</h1>
-            <p class="description">{{$t('toolItem.deposits.description')}}</p>
-        </div>
-    </PrimaryColorProvider>
+  <PrimaryColorProvider :color="EPrimaryColor.DEPOSITS">
+    <InvestmentTool
+      :title="$t('toolItem.deposits.label')"
+      :description="$t('toolItem.deposits.description')"
+    >
+      <template #form>
+        <DepositForm />
+      </template>
+      <template #visualization>
+        <DepositCalculationResults
+        :item="InvestmentTool.ResultItemContainer"
+          :final-amount="100000"
+          :accrued-interest="10000"
+          :effective-rate="10"
+          :frequency="frequency"
+          :capitalization="capitalization"
+          :capital-growth-graph="mockCapitalGrowthGraph"
+        />
+      </template>
+    </InvestmentTool>
+  </PrimaryColorProvider>
 </template>
 
 <style scoped>
-.title-container {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    padding-inline: 1rem;
-    border-left: 4px solid var(--ui-primary);
+.form-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    line-height: 1;
-    color: var(--ui-text);
-}
-
-.description {
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1;
-    color: var(--ui-text-muted);
+.form-icon {
+  color: var(--ui-primary);
 }
 </style>
