@@ -2,7 +2,15 @@
 import { bondIcon } from '../../lib/constants'
 import { createBondsFormSchema } from '../../model/bondsFormSchema'
 import { useBondsFrequencyOptions } from '../../model/options'
-import type { IBondsForm } from '../../model/types'
+import { EBondFrequency, type IBondsForm } from '../../model/types'
+import {
+  buildFormStateQuery,
+  parseBooleanQuery,
+  parseOptionalFiniteNumber,
+  parseQueryEnumMember,
+  queryParamFirst
+} from '~/shared/lib/routeQuery'
+import { useRouteQueryFormSync } from '~/shared/lib/useRouteQueryFormSync'
 
 const { locale } = useI18n()
 
@@ -31,6 +39,36 @@ const purchasePriceHintAmount = computed(() => {
     maximumFractionDigits: 2
   }).format(amount)
 })
+
+const { route } = useRouteQueryFormSync((q) => {
+  state.nominal = parseOptionalFiniteNumber(queryParamFirst(q, 'nominal'))
+  state.purchasePricePercent = parseOptionalFiniteNumber(
+    queryParamFirst(q, 'purchasePricePercent')
+  )
+  state.couponRate = parseOptionalFiniteNumber(queryParamFirst(q, 'couponRate'))
+  state.frequency = parseQueryEnumMember(
+    queryParamFirst(q, 'frequency'),
+    EBondFrequency
+  )
+  state.termMonths = parseOptionalFiniteNumber(queryParamFirst(q, 'termMonths'))
+  state.taxRate = parseOptionalFiniteNumber(queryParamFirst(q, 'taxRate'))
+  state.isCustomRate = parseBooleanQuery(queryParamFirst(q, 'isCustomRate'))
+})
+
+const handleSubmit = () => {
+  navigateTo({
+    path: route.path,
+    query: buildFormStateQuery({
+      nominal: state.nominal,
+      purchasePricePercent: state.purchasePricePercent,
+      couponRate: state.couponRate,
+      frequency: state.frequency,
+      termMonths: state.termMonths,
+      taxRate: state.taxRate,
+      isCustomRate: state.isCustomRate
+    })
+  })
+}
 </script>
 
 <template>
@@ -45,6 +83,7 @@ const purchasePriceHintAmount = computed(() => {
       :schema="schema"
       :state="state"
       class="form-content"
+      @submit="handleSubmit"
     >
       <UFormField
         :error="false"

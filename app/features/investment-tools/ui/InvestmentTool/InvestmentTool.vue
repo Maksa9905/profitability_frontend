@@ -7,7 +7,6 @@ defineSlots<{
 defineProps<{
   title: string
   description: string
-  /** `id` у `UForm` в слоте — кнопка «Рассчитать» отправляет форму и запускает валидацию */
   calculateFormId?: string
 }>()
 </script>

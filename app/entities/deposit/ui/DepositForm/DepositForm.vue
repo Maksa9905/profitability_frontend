@@ -2,7 +2,15 @@
 import { depositeIcon, interestRates } from '../../lib/constants'
 import { createDepositFormSchema } from '../../model/depositFormSchema'
 import { useDepositFrequencyOptions } from '../../model/options'
-import type { IDepositForm } from '../../model/types'
+import { EDepositFrequency, type IDepositForm } from '../../model/types'
+import {
+  buildFormStateQuery,
+  parseBooleanQuery,
+  parseOptionalFiniteNumber,
+  parseQueryEnumMember,
+  queryParamFirst
+} from '~/shared/lib/routeQuery'
+import { useRouteQueryFormSync } from '~/shared/lib/useRouteQueryFormSync'
 
 defineSlots<{
   form: () => VNode
@@ -19,6 +27,32 @@ const state = reactive<IDepositForm>({
 const schema = computed(() => createDepositFormSchema())
 
 const frequencyOptions = useDepositFrequencyOptions()
+
+const { route } = useRouteQueryFormSync((q) => {
+  state.amount = parseOptionalFiniteNumber(queryParamFirst(q, 'amount'))
+  state.interestRate = parseOptionalFiniteNumber(
+    queryParamFirst(q, 'interestRate')
+  )
+  state.termMonths = parseOptionalFiniteNumber(queryParamFirst(q, 'termMonths'))
+  state.capitalization = parseBooleanQuery(queryParamFirst(q, 'capitalization'))
+  state.frequency = parseQueryEnumMember(
+    queryParamFirst(q, 'frequency'),
+    EDepositFrequency
+  )
+})
+
+const handleSubmit = () => {
+  navigateTo({
+    path: route.path,
+    query: buildFormStateQuery({
+      amount: state.amount,
+      interestRate: state.interestRate,
+      termMonths: state.termMonths,
+      capitalization: state.capitalization,
+      frequency: state.frequency
+    })
+  })
+}
 </script>
 
 <template>
@@ -33,6 +67,7 @@ const frequencyOptions = useDepositFrequencyOptions()
       :schema="schema"
       :state="state"
       class="form-content"
+      @submit="handleSubmit"
     >
       <UFormField
         :error="false"

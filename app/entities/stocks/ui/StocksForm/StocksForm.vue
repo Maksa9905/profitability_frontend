@@ -1,8 +1,16 @@
 <script setup lang="ts">
 import { stocksIcon } from '../../lib/constants'
 import { createStocksFormSchema } from '../../model/stocksFormSchema'
-import type { IStocksForm } from '../../model/types'
+import { EStockFrequency, type IStocksForm } from '../../model/types'
 import { useStocksFrequencyOptions } from '../../model/useStocksFrequencyOptions'
+import {
+  buildFormStateQuery,
+  parseBooleanQuery,
+  parseOptionalFiniteNumber,
+  parseQueryEnumMember,
+  queryParamFirst
+} from '~/shared/lib/routeQuery'
+import { useRouteQueryFormSync } from '~/shared/lib/useRouteQueryFormSync'
 
 const state = reactive<IStocksForm>({
   purchasePrice: undefined,
@@ -18,6 +26,44 @@ const state = reactive<IStocksForm>({
 const schema = computed(() => createStocksFormSchema())
 
 const frequencyOptions = useStocksFrequencyOptions()
+
+const { route } = useRouteQueryFormSync((q) => {
+  state.purchasePrice = parseOptionalFiniteNumber(
+    queryParamFirst(q, 'purchasePrice')
+  )
+  state.targetPrice = parseOptionalFiniteNumber(
+    queryParamFirst(q, 'targetPrice')
+  )
+  state.holdingMonths = parseOptionalFiniteNumber(
+    queryParamFirst(q, 'holdingMonths')
+  )
+  state.dividendRate = parseOptionalFiniteNumber(
+    queryParamFirst(q, 'dividendRate')
+  )
+  state.frequency = parseQueryEnumMember(
+    queryParamFirst(q, 'frequency'),
+    EStockFrequency
+  )
+  state.commission = parseOptionalFiniteNumber(queryParamFirst(q, 'commission'))
+  state.taxRate = parseOptionalFiniteNumber(queryParamFirst(q, 'taxRate'))
+  state.withCommission = parseBooleanQuery(queryParamFirst(q, 'withCommission'))
+})
+
+const handleSubmit = () => {
+  navigateTo({
+    path: route.path,
+    query: buildFormStateQuery({
+      purchasePrice: state.purchasePrice,
+      targetPrice: state.targetPrice,
+      holdingMonths: state.holdingMonths,
+      dividendRate: state.dividendRate,
+      frequency: state.frequency,
+      commission: state.commission,
+      taxRate: state.taxRate,
+      withCommission: state.withCommission
+    })
+  })
+}
 </script>
 
 <template>
@@ -32,6 +78,7 @@ const frequencyOptions = useStocksFrequencyOptions()
       :schema="schema"
       :state="state"
       class="form-content"
+      @submit="handleSubmit"
     >
       <UFormField
         :error="false"
