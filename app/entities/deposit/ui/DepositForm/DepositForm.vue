@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { depositeIcon, interestRates } from '../../lib/constants'
+import { depositeIcon, depositFormId, interestRates } from '../../lib/constants'
 import { createDepositFormSchema } from '../../model/depositFormSchema'
 import { useDepositFrequencyOptions } from '../../model/options'
 import { EDepositFrequency, type IDepositForm } from '../../model/types'
@@ -42,16 +42,19 @@ const { route } = useRouteQueryFormSync((q) => {
 })
 
 const handleSubmit = () => {
-  navigateTo({
-    path: route.path,
-    query: buildFormStateQuery({
-      amount: state.amount,
-      interestRate: state.interestRate,
-      termMonths: state.termMonths,
-      capitalization: state.capitalization,
-      frequency: state.frequency
-    })
-  })
+  navigateTo(
+    {
+      path: route.path,
+      query: buildFormStateQuery({
+        amount: state.amount,
+        interestRate: state.interestRate,
+        termMonths: state.termMonths,
+        capitalization: state.capitalization,
+        frequency: state.frequency
+      })
+    },
+    { replace: true }
+  )
 }
 </script>
 
@@ -63,7 +66,7 @@ const handleSubmit = () => {
     </header>
 
     <UForm
-      id="deposit-investment-form"
+      :id="depositFormId"
       :schema="schema"
       :state="state"
       class="form-content"

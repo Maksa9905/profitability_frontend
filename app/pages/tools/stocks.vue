@@ -1,20 +1,29 @@
 <script setup lang="ts">
 import {
+  EStockFrequency,
   StocksCalculationResults,
   StocksForm,
-  EStockFrequency
+  stocksFormId,
+  useStocksCalculate
 } from '~/entities/stocks'
 import {
   PrimaryColorProvider,
   EPrimaryColor
 } from '~/features/dynamical-primary-color'
 import { InvestmentTool } from '~/features/investment-tools'
+
+const { data: stockData } = useStocksCalculate()
+
+const stockFrequency = computed(
+  () =>
+    (stockData.value?.frequency ?? EStockFrequency.MONTHLY) as EStockFrequency
+)
 </script>
 
 <template>
   <PrimaryColorProvider :color="EPrimaryColor.STOCKS">
     <InvestmentTool
-      calculate-form-id="stocks-investment-form"
+      :calculate-form-id="stocksFormId"
       :title="$t('toolItem.stocks.label')"
       :description="$t('toolItem.stocks.description')"
     >
@@ -24,13 +33,13 @@ import { InvestmentTool } from '~/features/investment-tools'
       <template #visualization>
         <StocksCalculationResults
           :item="InvestmentTool.ResultItemContainer"
-          :total-yield-percent="20"
-          :total-yield-amount="100000"
-          :net-yield="10000"
-          :capital-gain="10000"
-          :dividend-income="10000"
-          :frequency="EStockFrequency.MONTHLY"
-          :portfolio-growth-graph="[10000, 20000, 30000, 40000, 50000]"
+          :total-yield-percent="stockData?.totalYieldPercent ?? 0"
+          :total-yield-amount="stockData?.totalYieldAmount ?? 0"
+          :net-yield="stockData?.netYield ?? 0"
+          :capital-gain="stockData?.capitalGain ?? 0"
+          :dividend-income="stockData?.dividendIncome ?? 0"
+          :frequency="stockFrequency"
+          :portfolio-growth-graph="stockData?.portfolioGrowthGraph ?? []"
         />
       </template>
     </InvestmentTool>

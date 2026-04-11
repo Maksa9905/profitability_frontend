@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { bondIcon } from '../../lib/constants'
+import { bondIcon, bondsFormId } from '../../lib/constants'
 import { createBondsFormSchema } from '../../model/bondsFormSchema'
 import { useBondsFrequencyOptions } from '../../model/options'
 import { EBondFrequency, type IBondsForm } from '../../model/types'
@@ -56,18 +56,21 @@ const { route } = useRouteQueryFormSync((q) => {
 })
 
 const handleSubmit = () => {
-  navigateTo({
-    path: route.path,
-    query: buildFormStateQuery({
-      nominal: state.nominal,
-      purchasePricePercent: state.purchasePricePercent,
-      couponRate: state.couponRate,
-      frequency: state.frequency,
-      termMonths: state.termMonths,
-      taxRate: state.taxRate,
-      isCustomRate: state.isCustomRate
-    })
-  })
+  navigateTo(
+    {
+      path: route.path,
+      query: buildFormStateQuery({
+        nominal: state.nominal,
+        purchasePricePercent: state.purchasePricePercent,
+        couponRate: state.couponRate,
+        frequency: state.frequency,
+        termMonths: state.termMonths,
+        taxRate: state.taxRate,
+        isCustomRate: state.isCustomRate
+      })
+    },
+    { replace: true }
+  )
 }
 </script>
 
@@ -79,7 +82,7 @@ const handleSubmit = () => {
     </header>
 
     <UForm
-      id="bonds-investment-form"
+      :id="bondsFormId"
       :schema="schema"
       :state="state"
       class="form-content"

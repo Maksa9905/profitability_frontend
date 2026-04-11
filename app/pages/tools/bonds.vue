@@ -2,7 +2,9 @@
 import {
   BondsCalculationResults,
   BondsForm,
-  EBondFrequency
+  bondsFormId,
+  EBondFrequency,
+  useBondsCalculate
 } from '~/entities/bonds'
 import {
   EPrimaryColor,
@@ -10,15 +12,18 @@ import {
 } from '~/features/dynamical-primary-color'
 import { InvestmentTool } from '~/features/investment-tools'
 
-const mockCouponPaymentsGraph = [
-  20, 30, 40, 50, 60, 70, 190, 20, 30, 40, 50, 60, 70, 190
-]
+const { data: bondData } = useBondsCalculate()
+
+const bondFrequency = computed(
+  () =>
+    (bondData.value?.frequency ?? EBondFrequency.QUARTERLY) as EBondFrequency
+)
 </script>
 
 <template>
   <PrimaryColorProvider :color="EPrimaryColor.BONDS">
     <InvestmentTool
-      calculate-form-id="bonds-investment-form"
+      :calculate-form-id="bondsFormId"
       :title="$t('toolItem.bonds.label')"
       :description="$t('toolItem.bonds.description')"
     >
@@ -28,12 +33,12 @@ const mockCouponPaymentsGraph = [
       <template #visualization>
         <BondsCalculationResults
           :item="InvestmentTool.ResultItemContainer"
-          :ytm="10"
-          :net-yield="10"
-          :total-profit-amount="10000"
-          :total-profit-percent="10"
-          :frequency="EBondFrequency.QUARTERLY"
-          :coupon-payments-graph="mockCouponPaymentsGraph"
+          :ytm="bondData?.ytm ?? 0"
+          :net-yield="bondData?.netYield ?? 0"
+          :total-profit-amount="bondData?.totalProfitAmount ?? 0"
+          :total-profit-percent="bondData?.totalProfitPercent ?? 0"
+          :frequency="bondFrequency"
+          :coupon-payments-graph="bondData?.couponPaymentsGraph ?? []"
         />
       </template>
     </InvestmentTool>

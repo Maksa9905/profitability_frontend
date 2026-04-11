@@ -1,0 +1,88 @@
+{
+  "depositAdd": {
+    "title": "Вклад «Накопительный»",
+    "finalAmount": 1154300,
+    "accruedInterest": 154300,
+    "effectiveRate": 16.85,
+    "frequency": "MONTHLY",
+    "capitalGrowthGraph": [
+      1000000, 1013500, 1027200, 1041100, 1055400, 1070000, 1085000, 1100400,
+      1116200, 1132400, 1149000, 1154300
+    ]
+  },
+  "stockAdd": {
+    "title": "Сбербанк, преф.",
+    "totalYieldPercent": 23.6,
+    "totalYieldAmount": 118420.5,
+    "netYield": 18.9,
+    "capitalGain": 76200,
+    "dividendIncome": 42220.5,
+    "frequency": "QUARTERLY",
+    "portfolioGrowthGraph": [
+      500000, 512400, 525100, 538900, 551200, 565800, 580100, 595400, 610200,
+      625900, 640500, 655200, 668420.5
+    ]
+  },
+  "bondAdd": {
+    "title": "ОФЗ 26243",
+    "ytm": 12.45,
+    "netYield": 10.12,
+    "totalProfitAmount": 87650,
+    "totalProfitPercent": 8.76,
+    "frequency": "QUARTERLY",
+    "couponPaymentsGraph": [
+      18750, 18750, 18900, 19050, 19200, 19350, 19500, 19650, 19800, 19950,
+      20100, 20250, 20400, 20550, 20700, 20850
+    ]
+  },
+  "stockList": [
+    {
+      "id": 10042,
+      "title": "Газпром",
+      "purchasePrice": 164.2,
+      "targetPrice": 189.5,
+      "holdingMonths": 14,
+      "dividendRate": 9.2,
+      "commission": 0.04,
+      "frequency": "SEMI_ANNUALLY",
+      "totalYieldPercent": 21.8,
+      "totalYieldAmount": 43600,
+      "dividendIncome": 12800,
+      "capitalGain": 30800,
+      "netYield": 19.4,
+      "createdAt": "2025-03-18T09:24:11.000Z"
+    }
+  ],
+  "depositList": [
+    {
+      "id": 5007,
+      "title": "Вклад «Максимальный доход»",
+      "amount": 750000,
+      "interestRate": 17.25,
+      "termMonths": 12,
+      "capitalization": true,
+      "frequency": "MONTHLY",
+      "finalAmount": 892400,
+      "accruedInterest": 142400,
+      "effectiveRate": 18.02,
+      "createdAt": "2025-02-01T14:05:00.000Z"
+    }
+  ],
+  "bondList": [
+    {
+      "id": 8801,
+      "title": "ОФЗ-ПД 26238",
+      "nominal": 1000,
+      "purchasePricePercent": 97.8,
+      "couponRate": 7.15,
+      "termMonths": 36,
+      "taxRate": 13,
+      "frequency": "QUARTERLY",
+      "ytm": 11.05,
+      "netYield": 8.95,
+      "totalProfitAmount": 52300,
+      "totalProfitPercent": 10.45,
+      "createdAt": "2025-01-22T11:17:33.000Z"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { stocksIcon } from '../../lib/constants'
+import { stocksFormId, stocksIcon } from '../../lib/constants'
 import { createStocksFormSchema } from '../../model/stocksFormSchema'
 import { EStockFrequency, type IStocksForm } from '../../model/types'
 import { useStocksFrequencyOptions } from '../../model/useStocksFrequencyOptions'
@@ -50,19 +50,22 @@ const { route } = useRouteQueryFormSync((q) => {
 })
 
 const handleSubmit = () => {
-  navigateTo({
-    path: route.path,
-    query: buildFormStateQuery({
-      purchasePrice: state.purchasePrice,
-      targetPrice: state.targetPrice,
-      holdingMonths: state.holdingMonths,
-      dividendRate: state.dividendRate,
-      frequency: state.frequency,
-      commission: state.commission,
-      taxRate: state.taxRate,
-      withCommission: state.withCommission
-    })
-  })
+  navigateTo(
+    {
+      path: route.path,
+      query: buildFormStateQuery({
+        purchasePrice: state.purchasePrice,
+        targetPrice: state.targetPrice,
+        holdingMonths: state.holdingMonths,
+        dividendRate: state.dividendRate,
+        frequency: state.frequency,
+        commission: state.commission,
+        taxRate: state.taxRate,
+        withCommission: state.withCommission
+      })
+    },
+    { replace: true }
+  )
 }
 </script>
 
@@ -74,7 +77,7 @@ const handleSubmit = () => {
     </header>
 
     <UForm
-      id="stocks-investment-form"
+      :id="stocksFormId"
       :schema="schema"
       :state="state"
       class="form-content"
