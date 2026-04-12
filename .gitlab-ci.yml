@@ -12,8 +12,7 @@ stages:
     paths:
       - .pnpm-store
   before_script:
-    - corepack enable
-    - corepack prepare pnpm@10.32.1 --activate
+    - npm install -g pnpm@10.32.1
     - pnpm config set store-dir .pnpm-store
     - pnpm install --frozen-lockfile
 
