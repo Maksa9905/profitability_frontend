@@ -4,7 +4,7 @@ WORKDIR /app
 
 ENV HUSKY=0
 
-RUN corepack enable && corepack prepare pnpm@10.32.1 --activate
+RUN npm install -g pnpm@10.32.1
 
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
