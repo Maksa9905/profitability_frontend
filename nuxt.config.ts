@@ -13,6 +13,21 @@ export default defineNuxtConfig({
   },
 
   css: ['~/assets/css/main.css'],
+  runtimeConfig: {
+    public: {
+      /**
+       * Базовый URL API (без завершающего `/`).
+       * Прод: реальный бэкенд. До готовности — мок (Beeceptor и т.п.).
+       * Задаётся через `NUXT_PUBLIC_API_BASE_URL`.
+       */
+      apiBaseUrl: 'https://profitability.free.beeceptor.com',
+      /**
+       * UUID для заголовка `X-Auth-User-Id` (investment-controller в OpenAPI).
+       * `NUXT_PUBLIC_DEV_AUTH_USER_ID`; в проде заменить на сессию/токен.
+       */
+      devAuthUserId: '00000000-0000-4000-8000-000000000001'
+    }
+  },
 
   compatibilityDate: '2025-01-15',
 

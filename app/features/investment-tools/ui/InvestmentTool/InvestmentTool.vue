@@ -7,6 +7,7 @@ defineSlots<{
 defineProps<{
   title: string
   description: string
+  calculateFormId?: string
 }>()
 </script>
 
@@ -20,7 +21,13 @@ defineProps<{
     <div class="investment-tool">
       <div class="investment_tool__form">
         <slot name="form" />
-        <UButton block>{{ $t('investmentTools.calculate') }}</UButton>
+        <UButton
+          block
+          :type="calculateFormId ? 'submit' : 'button'"
+          :form="calculateFormId"
+        >
+          {{ $t('investmentTools.calculate') }}
+        </UButton>
         <UButton block variant="outline">{{
           $t('investmentTools.save')
         }}</UButton>

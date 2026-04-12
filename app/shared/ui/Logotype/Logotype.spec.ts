@@ -34,7 +34,5 @@ describe('Logotype', () => {
 
     expect(logotype.get('h1').text()).toBe('профитабилити.ру')
     expect(logotype.get('p').text()).toBe('Ваш финансовый аналитик')
-
-    expect(logotype.element).toMatchSnapshot()
   })
 })

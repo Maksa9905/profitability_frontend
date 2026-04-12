@@ -17,6 +17,7 @@
     "test": "vitest run",
     "openapi:types": "openapi-typescript openapi/auth.json -o app/shared/api/generated/auth.ts && openapi-typescript openapi/invest.json -o app/shared/api/generated/invest.ts",
     "openapi:docs": "node scripts/generate-api-docs-html.mjs",
+    "mock:api": "node mock/json-server/server.cjs",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -32,9 +33,11 @@
     "@nuxt/ui": "^4.5.1",
     "@nuxtjs/i18n": "^10.2.4",
     "@unovis/ts": "^1.6.2",
+    "axios": "^1.10.0",
     "nuxt": "^4.4.2",
     "nuxt-echarts": "^1.0.1",
-    "tailwindcss": "^4.2.1"
+    "tailwindcss": "^4.2.1",
+    "zod": "^3.24.0"
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.15.2",
@@ -44,6 +47,7 @@
     "eslint-config-prettier": "^10.1.8",
     "happy-dom": "^20.8.9",
     "husky": "^9.1.7",
+    "json-server": "0.17.4",
     "lint-staged": "^16.4.0",
     "openapi-typescript": "^7.13.0",
     "prettier": "^3.8.1",
