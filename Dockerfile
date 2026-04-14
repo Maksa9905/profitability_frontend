@@ -3,6 +3,7 @@ FROM node:22-alpine AS build
 WORKDIR /app
 
 ENV HUSKY=0
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 
 RUN corepack enable && corepack prepare pnpm@10.32.1 --activate
 
