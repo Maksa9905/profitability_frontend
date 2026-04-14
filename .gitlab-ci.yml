@@ -5,6 +5,8 @@ stages:
 
 .node_pnpm: &node_pnpm
   image: node:22-alpine
+  tags:
+    - tbank
   cache:
     key:
       files:
@@ -37,6 +39,8 @@ unit_tests:
 
 build:
   stage: build
+  tags:
+    - tbank
   before_script:
     - docker --version
     - docker compose version
@@ -48,6 +52,8 @@ build:
 
 deploy:
   stage: deploy
+  tags:
+    - tbank
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "master"'
   before_script:
