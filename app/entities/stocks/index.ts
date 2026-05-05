@@ -1,6 +1,7 @@
-export { useStocksCalculate, useStocksList } from './api/api'
+export { saveStock, useStocksCalculate, useStocksList } from './api/api'
 
 export {
+  buildStockHistoryQuery,
   DEFAULT_STOCK_REQUEST_TITLE,
   parseStockRouteToRequest
 } from './model/mappers'

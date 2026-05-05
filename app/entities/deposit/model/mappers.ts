@@ -2,6 +2,7 @@ import type { components } from '~/shared/api/generated/invest'
 import type { LocationQuery } from 'vue-router'
 
 import {
+  buildFormStateQuery,
   parseBooleanQuery,
   parseOptionalFiniteNumber,
   parseQueryEnumMember,
@@ -13,6 +14,7 @@ import { EDepositFrequency } from './types'
 export const DEFAULT_DEPOSIT_REQUEST_TITLE = 'Вклад'
 
 type DepositRequest = components['schemas']['DepositRequest']
+type DepositHistoryResponse = components['schemas']['DepositHistoryResponse']
 
 export function parseDepositRouteToRequest(
   query: LocationQuery
@@ -48,4 +50,14 @@ export function parseDepositRouteToRequest(
     capitalization,
     frequency: frequency ?? EDepositFrequency.MONTHLY
   }
+}
+
+export function buildDepositHistoryQuery(item: DepositHistoryResponse) {
+  return buildFormStateQuery({
+    amount: item.amount,
+    interestRate: item.interestRate,
+    termMonths: item.termMonths,
+    capitalization: item.capitalization,
+    frequency: item.frequency
+  })
 }

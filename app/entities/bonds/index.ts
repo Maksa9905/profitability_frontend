@@ -1,6 +1,7 @@
-export { useBondsCalculate, useBondsList } from './api/api'
+export { saveBond, useBondsCalculate, useBondsList } from './api/api'
 
 export {
+  buildBondHistoryQuery,
   DEFAULT_BOND_REQUEST_TITLE,
   parseBondRouteToRequest
 } from './model/mappers'

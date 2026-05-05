@@ -4,7 +4,13 @@
     "tagline": "Ваш финансовый аналитик"
   },
   "header": {
-    "signIn": "Войти"
+    "signIn": "Войти",
+    "profile": "Профиль",
+    "menu": {
+      "theme": "Тёмная тема",
+      "language": "Язык",
+      "logout": "Выйти"
+    }
   },
   "breadcrumb": {
     "tools": "Инструменты",
@@ -165,5 +171,56 @@
   "investmentTools": {
     "calculate": "Рассчитать",
     "save": "Сохранить расчёт"
+  },
+  "common": {
+    "loading": "Загрузка..."
+  },
+  "auth": {
+    "tabs": {
+      "login": "Вход",
+      "register": "Регистрация"
+    },
+    "login": {
+      "title": "Вход в аккаунт"
+    },
+    "register": {
+      "title": "Создание аккаунта"
+    },
+    "fields": {
+      "email": "Email",
+      "password": "Пароль"
+    },
+    "placeholders": {
+      "email": "Введите email",
+      "password": "Введите пароль",
+      "passwordMin": "Минимум 6 символов"
+    },
+    "actions": {
+      "login": "Войти",
+      "register": "Зарегистрироваться"
+    },
+    "errors": {
+      "invalidCredentials": "Не удалось выполнить вход. Проверьте email и пароль.",
+      "registerFailed": "Не удалось зарегистрироваться. Попробуйте позже."
+    }
+  },
+  "history": {
+    "empty": "Сохранённых расчётов пока нет.",
+    "fields": {
+      "netYield": "Чистая доходность"
+    },
+    "values": {
+      "yes": "Да",
+      "no": "Нет"
+    },
+    "stocks": {
+      "title": "Сохранённые расчёты по акциям"
+    },
+    "bonds": {
+      "title": "Сохранённые расчёты по облигациям"
+    },
+    "deposits": {
+      "title": "Сохранённые расчёты по депозитам"
+    }
   }
 }

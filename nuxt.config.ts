@@ -7,12 +7,14 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     'nuxt-echarts'
   ],
-
   devtools: {
     enabled: true
   },
 
   css: ['~/assets/css/main.css'],
+  ui: {
+    colorMode: false
+  },
   runtimeConfig: {
     public: {
       /**
@@ -58,5 +60,5 @@ export default defineNuxtConfig({
       cookieKey: 'i18n_locale',
       redirectOn: 'all'
     }
-  }
+  },
 })

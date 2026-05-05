@@ -1,0 +1,4 @@
+export const AUTH_TOKEN_STORAGE_KEY = 'profitability.auth.token'
+export const AUTH_TOKEN_COOKIE_KEY = 'profitability.auth.token'
+export const APP_THEME_STORAGE_KEY = 'profitability.app.theme'
+export const APP_LOCALE_STORAGE_KEY = 'profitability.app.locale'

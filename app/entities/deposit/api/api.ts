@@ -30,7 +30,7 @@ export function useDepositCalculate() {
       return $api
         .post<
           Schemas['DepositResponse']
-        >(`/api/investment/deposit/add`, payload)
+        >(`/api/investment/deposit/calculate`, payload)
         .then((r) => r.data)
     },
     {
@@ -39,4 +39,11 @@ export function useDepositCalculate() {
       default: () => null
     }
   )
+}
+
+export function saveDeposit(payload: Schemas['DepositRequest']) {
+  const { $api } = useNuxtApp()
+  return $api
+    .post<Schemas['DepositResponse']>(`/api/investment/deposit/save`, payload)
+    .then((r) => r.data)
 }

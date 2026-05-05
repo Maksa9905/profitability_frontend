@@ -6,6 +6,10 @@ import { useNavigationItems } from '../model/useNavigationItems'
 const route = useRoute()
 const items = useNavigationItems()
 
+const { orientation = 'horizontal' } = defineProps<{
+  orientation?: 'horizontal' | 'vertical'
+}>()
+
 const color = computed(() => {
   return route.path.split('/')[2] as EPrimaryColor
 })
@@ -14,7 +18,7 @@ const color = computed(() => {
 <template>
   <PrimaryColorProvider class="navigation" :color="color">
     <UNavigationMenu
-      orientation="horizontal"
+      :orientation
       highlight
       :ui="{ link: 'after:bottom-[-16px]' }"
       :items="items"

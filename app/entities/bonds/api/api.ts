@@ -29,7 +29,9 @@ export function useBondsCalculate() {
         return null
       }
       return $api
-        .post<Schemas['BondResponse']>(`/api/investment/bond/add`, payload)
+        .post<
+          Schemas['BondResponse']
+        >(`/api/investment/bond/calculate`, payload)
         .then((r) => r.data)
     },
     {
@@ -38,4 +40,11 @@ export function useBondsCalculate() {
       default: () => null
     }
   )
+}
+
+export function saveBond(payload: Schemas['BondRequest']) {
+  const { $api } = useNuxtApp()
+  return $api
+    .post<Schemas['BondResponse']>(`/api/investment/bond/save`, payload)
+    .then((r) => r.data)
 }

@@ -1,14 +1,24 @@
 <script lang="ts" setup>
+const emit = defineEmits<{
+  save: []
+}>()
+
 defineSlots<{
   form: () => VNode
   visualization: () => VNode
 }>()
 
-defineProps<{
-  title: string
-  description: string
-  calculateFormId?: string
-}>()
+withDefaults(
+  defineProps<{
+    title: string
+    description: string
+    calculateFormId?: string
+    isLoading?: boolean
+  }>(),
+  {
+    isLoading: false
+  }
+)
 </script>
 
 <template>
@@ -28,12 +38,19 @@ defineProps<{
         >
           {{ $t('investmentTools.calculate') }}
         </UButton>
-        <UButton block variant="outline">{{
-          $t('investmentTools.save')
-        }}</UButton>
+        <UButton block variant="outline" @click="emit('save')">
+          {{ $t('investmentTools.save') }}
+        </UButton>
       </div>
       <div class="investment_tool__visualization">
-        <slot name="visualization" />
+        <div v-if="isLoading" class="investment_tool__loader">
+          <UIcon
+            name="i-lucide-loader-circle"
+            class="investment_tool__loader-icon"
+          />
+          <span>{{ $t('common.loading') }}</span>
+        </div>
+        <slot v-else name="visualization" />
       </div>
     </div>
   </section>
@@ -92,6 +109,33 @@ defineProps<{
 .investment_tool__visualization {
   grid-column: 2;
   grid-row: 1;
+  min-height: 20rem;
+}
+
+.investment_tool__loader {
+  height: 100%;
+  min-height: 20rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: var(--ui-text-muted);
+  background-color: var(--ui-bg);
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.investment_tool__loader-icon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (max-width: 1024px) {

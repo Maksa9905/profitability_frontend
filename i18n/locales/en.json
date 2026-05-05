@@ -4,7 +4,13 @@
     "tagline": "Your financial analyst"
   },
   "header": {
-    "signIn": "Sign in"
+    "signIn": "Sign in",
+    "profile": "Profile",
+    "menu": {
+      "theme": "Dark theme",
+      "language": "Language",
+      "logout": "Log out"
+    }
   },
   "breadcrumb": {
     "tools": "Tools",
@@ -165,5 +171,56 @@
   "investmentTools": {
     "calculate": "Calculate",
     "save": "Save calculation"
+  },
+  "common": {
+    "loading": "Loading..."
+  },
+  "auth": {
+    "tabs": {
+      "login": "Sign in",
+      "register": "Sign up"
+    },
+    "login": {
+      "title": "Sign in to your account"
+    },
+    "register": {
+      "title": "Create an account"
+    },
+    "fields": {
+      "email": "Email",
+      "password": "Password"
+    },
+    "placeholders": {
+      "email": "Enter your email",
+      "password": "Enter your password",
+      "passwordMin": "At least 6 characters"
+    },
+    "actions": {
+      "login": "Sign in",
+      "register": "Create account"
+    },
+    "errors": {
+      "invalidCredentials": "Could not sign in. Please check your email and password.",
+      "registerFailed": "Could not create account. Please try again later."
+    }
+  },
+  "history": {
+    "empty": "No saved calculations yet.",
+    "fields": {
+      "netYield": "Net yield"
+    },
+    "values": {
+      "yes": "Yes",
+      "no": "No"
+    },
+    "stocks": {
+      "title": "Saved stock calculations"
+    },
+    "bonds": {
+      "title": "Saved bond calculations"
+    },
+    "deposits": {
+      "title": "Saved deposit calculations"
+    }
   }
 }

@@ -2,6 +2,7 @@ import type { components } from '~/shared/api/generated/invest'
 import type { LocationQuery } from 'vue-router'
 
 import {
+  buildFormStateQuery,
   parseOptionalFiniteNumber,
   parseQueryEnumMember,
   queryParamFirst
@@ -12,6 +13,7 @@ import { EBondFrequency } from './types'
 export const DEFAULT_BOND_REQUEST_TITLE = 'Облигация'
 
 type BondRequest = components['schemas']['BondRequest']
+type BondHistoryResponse = components['schemas']['BondHistoryResponse']
 
 export function parseBondRouteToRequest(
   query: LocationQuery
@@ -52,4 +54,16 @@ export function parseBondRouteToRequest(
     termMonths,
     taxRate
   }
+}
+
+export function buildBondHistoryQuery(item: BondHistoryResponse) {
+  return buildFormStateQuery({
+    nominal: item.nominal,
+    purchasePricePercent: item.purchasePricePercent,
+    couponRate: item.couponRate,
+    frequency: item.frequency,
+    termMonths: item.termMonths,
+    taxRate: item.taxRate,
+    isCustomRate: false
+  })
 }

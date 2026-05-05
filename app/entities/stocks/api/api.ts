@@ -28,7 +28,9 @@ export function useStocksCalculate() {
         return null
       }
       return $api
-        .post<Schemas['StockResponse']>(`/api/investment/stock/add`, payload)
+        .post<
+          Schemas['StockResponse']
+        >(`/api/investment/stock/calculate`, payload)
         .then((r) => r.data)
     },
     {
@@ -37,4 +39,11 @@ export function useStocksCalculate() {
       default: () => null
     }
   )
+}
+
+export function saveStock(payload: Schemas['StockRequest']) {
+  const { $api } = useNuxtApp()
+  return $api
+    .post<Schemas['StockResponse']>(`/api/investment/stock/save`, payload)
+    .then((r) => r.data)
 }

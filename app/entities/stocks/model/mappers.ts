@@ -2,6 +2,7 @@ import type { components } from '~/shared/api/generated/invest'
 import type { LocationQuery } from 'vue-router'
 
 import {
+  buildFormStateQuery,
   parseBooleanQuery,
   parseOptionalFiniteNumber,
   parseQueryEnumMember,
@@ -13,6 +14,7 @@ import { EStockFrequency } from './types'
 export const DEFAULT_STOCK_REQUEST_TITLE = 'Позиция'
 
 type StockRequest = components['schemas']['StockRequest']
+type StockHistoryResponse = components['schemas']['StockHistoryResponse']
 
 export function parseStockRouteToRequest(
   query: LocationQuery
@@ -70,4 +72,17 @@ export function parseStockRouteToRequest(
     commission,
     taxRate
   }
+}
+
+export function buildStockHistoryQuery(item: StockHistoryResponse) {
+  return buildFormStateQuery({
+    purchasePrice: item.purchasePrice,
+    targetPrice: item.targetPrice,
+    holdingMonths: item.holdingMonths,
+    dividendRate: item.dividendRate,
+    frequency: item.frequency,
+    commission: item.commission,
+    taxRate: 0,
+    withCommission: item.commission > 0
+  })
 }

@@ -1,6 +1,7 @@
-export { useDepositCalculate, useDepositList } from './api/api'
+export { saveDeposit, useDepositCalculate, useDepositList } from './api/api'
 
 export {
+  buildDepositHistoryQuery,
   DEFAULT_DEPOSIT_REQUEST_TITLE,
   parseDepositRouteToRequest
 } from './model/mappers'
