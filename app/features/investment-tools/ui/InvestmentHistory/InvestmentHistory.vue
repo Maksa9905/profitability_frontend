@@ -22,6 +22,12 @@ const emit = defineEmits<{
 
 const handleSelect = (query: Record<string, string>) => {
   emit('select', query)
+  if (import.meta.client) {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
 }
 </script>
 

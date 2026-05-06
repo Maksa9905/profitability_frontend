@@ -17,6 +17,7 @@ export default defineNuxtPlugin({
       headers: {
         'Content-Type': 'application/json',
         'X-Pinggy-No-Screen': '123123',
+        'Ngrok-skip-browser-warning': '123123',
         Accept: 'application/json'
       }
     })
