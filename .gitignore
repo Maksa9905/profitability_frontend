@@ -25,3 +25,4 @@ app/shared/api/generated/
 .env
 .env.*
 !.env.example
+!.env.prod.example
