@@ -1,5 +1,5 @@
-const OG_IMAGE_WIDTH = 1536
-const OG_IMAGE_HEIGHT = 1024
+const OG_IMAGE_WIDTH = 1200
+const OG_IMAGE_HEIGHT = 630
 
 export function useSiteSeo() {
   const { t, locale } = useI18n()
@@ -16,8 +16,7 @@ export function useSiteSeo() {
     return `${siteUrl.value}${path}`
   })
 
-  const ogImageLight = computed(() => `${siteUrl.value}/og/light-preview.png`)
-  const ogImageDark = computed(() => `${siteUrl.value}/og/dark-preview.png`)
+  const ogImage = computed(() => `${siteUrl.value}/og/preview.jpg`)
 
   const ogLocale = computed(() => (locale.value === 'ru' ? 'ru_RU' : 'en_US'))
 
@@ -31,26 +30,16 @@ export function useSiteSeo() {
     ogSiteName: title,
     ogUrl: canonicalUrl,
     ogLocale,
-    ogImage: () => [
-      {
-        url: ogImageLight.value,
-        width: OG_IMAGE_WIDTH,
-        height: OG_IMAGE_HEIGHT,
-        type: 'image/png',
-        alt: description.value
-      },
-      {
-        url: ogImageDark.value,
-        width: OG_IMAGE_WIDTH,
-        height: OG_IMAGE_HEIGHT,
-        type: 'image/png',
-        alt: description.value
-      }
-    ],
+    ogImage,
+    ogImageSecureUrl: ogImage,
+    ogImageWidth: OG_IMAGE_WIDTH,
+    ogImageHeight: OG_IMAGE_HEIGHT,
+    ogImageType: 'image/jpeg',
+    ogImageAlt: description,
     twitterCard: 'summary_large_image',
     twitterTitle: title,
     twitterDescription: description,
-    twitterImage: ogImageLight,
+    twitterImage: ogImage,
     robots: 'index, follow, max-image-preview:large'
   })
 
