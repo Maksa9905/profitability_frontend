@@ -10,13 +10,29 @@ export default defineNuxtConfig({
   devtools: {
     enabled: true
   },
+  app: {
+    head: {
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'referrer', content: 'strict-origin-when-cross-origin' },
+        { name: 'format-detection', content: 'telephone=no' }
+      ]
+    }
+  },
 
   css: ['~/assets/css/main.css'],
   ui: {
     colorMode: false
   },
+
   runtimeConfig: {
     public: {
+      /**
+       * Публичный URL сайта (без завершающего `/`) для canonical и Open Graph.
+       * `NUXT_PUBLIC_SITE_URL`.
+       */
+      siteUrl: 'https://profit.hakolr.dev',
       /**
        * Базовый URL API (без завершающего `/`).
        * Прод: реальный бэкенд. До готовности — мок (Beeceptor и т.п.).
@@ -60,5 +76,5 @@ export default defineNuxtConfig({
       cookieKey: 'i18n_locale',
       redirectOn: 'all'
     }
-  },
+  }
 })

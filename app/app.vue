@@ -23,13 +23,6 @@ const resolvedTheme = computed<AppTheme>(() =>
   themeCookie.value === 'dark' ? 'dark' : 'light'
 )
 
-const title =
-  localeCookie.value === 'ru' ? 'профитабилити.ру' : 'profitability.ru'
-const description =
-  localeCookie.value === 'ru'
-    ? 'Ваш финансовый аналитик'
-    : 'Your financial analyst'
-
 const isMenuOpen = ref(false)
 const isDarkMode = ref(false)
 const selectedLocale = ref<'ru' | 'en'>('ru')
@@ -114,10 +107,7 @@ useHead(() => ({
   }
 }))
 
-useSeoMeta({
-  title,
-  description
-})
+useSiteSeo()
 </script>
 
 <template>
