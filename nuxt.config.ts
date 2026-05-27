@@ -1,4 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+const siteUrl = process.env.NUXT_PUBLIC_SITE_URL || 'https://profit.hakolr.dev'
+
 export default defineNuxtConfig({
   modules: [
     '@nuxt/test-utils/module',
@@ -12,11 +14,30 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
+      htmlAttrs: {
+        prefix: 'og: https://ogp.me/ns#'
+      },
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'referrer', content: 'strict-origin-when-cross-origin' },
-        { name: 'format-detection', content: 'telephone=no' }
+        { name: 'format-detection', content: 'telephone=no' },
+        { property: 'og:title', content: 'профитабилити.ру' },
+        { property: 'og:description', content: 'Ваш финансовый аналитик' },
+        { property: 'og:type', content: 'website' },
+        { property: 'og:site_name', content: 'профитабилити.ру' },
+        {
+          property: 'og:image',
+          content: `${siteUrl}/og/preview.jpg`
+        },
+        { property: 'og:image:width', content: '1200' },
+        { property: 'og:image:height', content: '630' },
+        { property: 'og:image:type', content: 'image/jpeg' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        {
+          name: 'twitter:image',
+          content: `${siteUrl}/og/preview.jpg`
+        }
       ]
     }
   },
