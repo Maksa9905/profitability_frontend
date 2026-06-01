@@ -26,17 +26,11 @@ export default defineConfig({
     }
   },
   use: {
-    baseURL: 'http://localhost:5173',
+    baseURL: 'https://profit.hakolr.dev',
     viewport: { width: 1440, height: 900 },
     colorScheme: 'light',
     locale: 'ru-RU',
     timezoneId: 'Europe/Moscow',
     trace: 'on-first-retry'
-  },
-  webServer: {
-    command: 'pnpm dev --host 127.0.0.1 --port 5173',
-    url: 'http://localhost:5173',
-    reuseExistingServer: true,
-    timeout: 120_000
   }
 })
