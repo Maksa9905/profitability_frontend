@@ -1,9 +1,19 @@
 import type { components } from '~/shared/api/generated/auth'
 
-import { AUTH_TOKEN_COOKIE_KEY, AUTH_TOKEN_STORAGE_KEY } from './constants'
+import {
+  clearAuthTokens,
+  getAccessToken,
+  getRefreshToken,
+  setAuthTokens,
+  syncAuthState,
+  AUTH_REFRESH_TOKEN_STATE_KEY,
+  AUTH_TOKEN_STATE_KEY,
+  type AuthTokens
+} from './auth-tokens'
 
 type LoginRequest = components['schemas']['LoginRequest']
 type RegisterRequest = components['schemas']['RegisterRequest']
+type JwtResponse = components['schemas']['JwtResponse']
 
 export function extractToken(payload: Record<string, string>): string | null {
   const tokenKeys = [
@@ -29,74 +39,65 @@ export function extractToken(payload: Record<string, string>): string | null {
   return firstStringValue ?? null
 }
 
+function parseJwtResponse(data: unknown): AuthTokens | null {
+  if (typeof data !== 'object' || data === null) {
+    return null
+  }
+
+  const { accessToken, refreshToken } = data as Record<string, unknown>
+
+  if (
+    typeof accessToken !== 'string' ||
+    accessToken.trim().length === 0 ||
+    typeof refreshToken !== 'string' ||
+    refreshToken.trim().length === 0
+  ) {
+    return null
+  }
+
+  return { accessToken, refreshToken }
+}
+
 export function useAuth() {
   const { $api } = useNuxtApp()
-  const tokenCookie = useCookie<string | null>(AUTH_TOKEN_COOKIE_KEY, {
-    sameSite: 'lax'
-  })
-  const token = useState<string | null>(
-    'auth-token',
-    () => tokenCookie.value ?? null
+  const token = useState<string | null>(AUTH_TOKEN_STATE_KEY, () =>
+    getAccessToken()
+  )
+  const refreshToken = useState<string | null>(
+    AUTH_REFRESH_TOKEN_STATE_KEY,
+    () => getRefreshToken()
   )
   const initialized = useState<boolean>('auth-initialized', () => false)
 
   const isAuthenticated = computed(() => Boolean(token.value))
+
+  const applyTokens = (tokens: AuthTokens) => {
+    setAuthTokens(tokens)
+    token.value = tokens.accessToken
+    refreshToken.value = tokens.refreshToken
+  }
 
   const init = () => {
     if (initialized.value) {
       return
     }
 
-    if (!token.value && tokenCookie.value) {
-      token.value = tokenCookie.value
-    }
-
-    if (import.meta.client && !token.value) {
-      const localStorageToken = localStorage.getItem(AUTH_TOKEN_STORAGE_KEY)
-      if (localStorageToken) {
-        token.value = localStorageToken
-      }
-    }
-
-    tokenCookie.value = token.value
-
-    if (import.meta.client) {
-      if (token.value) {
-        localStorage.setItem(AUTH_TOKEN_STORAGE_KEY, token.value)
-      } else {
-        localStorage.removeItem(AUTH_TOKEN_STORAGE_KEY)
-      }
-    }
-
+    token.value = getAccessToken()
+    refreshToken.value = getRefreshToken()
     initialized.value = true
-  }
-
-  const setToken = (nextToken: string | null) => {
-    token.value = nextToken
-    tokenCookie.value = nextToken
-    if (!import.meta.client) {
-      return
-    }
-
-    if (nextToken) {
-      localStorage.setItem(AUTH_TOKEN_STORAGE_KEY, nextToken)
-      return
-    }
-
-    localStorage.removeItem(AUTH_TOKEN_STORAGE_KEY)
   }
 
   const login = async (payload: LoginRequest) => {
     const data = await $api
-      .post<Record<string, string>>('/api/auth/login', payload)
+      .post<JwtResponse>('/api/auth/login', payload)
       .then((response) => response.data)
 
-    const nextToken = extractToken(data)
-    if (!nextToken) {
-      throw new Error('Auth token not found in login response')
+    const tokens = parseJwtResponse(data)
+    if (!tokens) {
+      throw new Error('Auth tokens not found in login response')
     }
 
-    setToken(nextToken)
+    applyTokens(tokens)
   }
 
   const register = async (payload: RegisterRequest) => {
@@ -104,25 +105,61 @@ export function useAuth() {
       .post<Record<string, string>>('/api/auth/register', payload)
       .then((response) => response.data)
 
-    const maybeToken = extractToken(data)
-    if (maybeToken) {
-      setToken(maybeToken)
+    const jwtTokens = parseJwtResponse(data)
+    if (jwtTokens) {
+      applyTokens(jwtTokens)
+      return
+    }
+
+    if (extractToken(data)) {
+      await login({ email: payload.email, password: payload.password })
       return
     }
 
     await login({ email: payload.email, password: payload.password })
   }
 
+  const refreshTokens = async (): Promise<boolean> => {
+    const currentRefreshToken = getRefreshToken()
+    if (!currentRefreshToken) {
+      return false
+    }
+
+    try {
+      const data = await $api
+        .post<JwtResponse>('/api/auth/refresh', {
+          refreshToken: currentRefreshToken
+        })
+        .then((response) => response.data)
+
+      const tokens = parseJwtResponse(data)
+      if (!tokens) {
+        throw new Error('Auth tokens not found in refresh response')
+      }
+
+      applyTokens(tokens)
+      return true
+    } catch {
+      logout()
+      return false
+    }
+  }
+
   const logout = () => {
-    setToken(null)
+    clearAuthTokens()
+    token.value = null
+    refreshToken.value = null
+    syncAuthState(null)
   }
 
   return {
     token: readonly(token),
+    refreshToken: readonly(refreshToken),
     isAuthenticated,
     init,
     login,
     register,
+    refreshTokens,
     logout
   }
 }

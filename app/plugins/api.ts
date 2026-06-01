@@ -1,14 +1,41 @@
-import axios, { type AxiosInstance } from 'axios'
+import axios, {
+  type AxiosInstance,
+  type InternalAxiosRequestConfig
+} from 'axios'
 
-import { AUTH_TOKEN_COOKIE_KEY, AUTH_TOKEN_STORAGE_KEY } from '~/features/auth'
+import { createAuthRefreshHandler } from '~/features/auth/model/auth-refresh'
+import {
+  clearAuthTokens,
+  getAccessToken,
+  getRefreshToken,
+  syncAuthState
+} from '~/features/auth/model/auth-tokens'
+import type { components } from '~/shared/api/generated/auth'
+
+type JwtResponse = components['schemas']['JwtResponse']
+
+interface RetryAxiosRequestConfig extends InternalAxiosRequestConfig {
+  _retry?: boolean
+}
+
+const AUTH_ENDPOINTS = [
+  '/api/auth/login',
+  '/api/auth/register',
+  '/api/auth/refresh'
+]
+
+function isAuthEndpoint(url?: string): boolean {
+  if (!url) {
+    return false
+  }
+
+  return AUTH_ENDPOINTS.some((endpoint) => url.includes(endpoint))
+}
 
 export default defineNuxtPlugin({
   name: 'api-axios',
   setup() {
     const config = useRuntimeConfig()
-    const tokenCookie = useCookie<string | null>(AUTH_TOKEN_COOKIE_KEY, {
-      sameSite: 'lax'
-    })
     const baseURL = String(config.public.apiBaseUrl).replace(/\/$/, '')
 
     const api: AxiosInstance = axios.create({
@@ -22,11 +49,34 @@ export default defineNuxtPlugin({
       }
     })
 
+    const rawApi = axios.create({
+      baseURL,
+      timeout: 30_000,
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      }
+    })
+
+    const requestRefresh = createAuthRefreshHandler(async () => {
+      const refreshToken = getRefreshToken()
+      if (!refreshToken) {
+        return null
+      }
+
+      const { data } = await rawApi.post<JwtResponse>('/api/auth/refresh', {
+        refreshToken
+      })
+
+      return {
+        accessToken: data.accessToken,
+        refreshToken: data.refreshToken
+      }
+    })
+
     const userId = config.public.devAuthUserId
     api.interceptors.request.use((req) => {
-      const token = import.meta.client
-        ? (localStorage.getItem(AUTH_TOKEN_STORAGE_KEY) ?? tokenCookie.value)
-        : tokenCookie.value
+      const token = getAccessToken()
 
       if (token) {
         req.headers.set('Authorization', `Bearer ${token}`)
@@ -38,6 +88,40 @@ export default defineNuxtPlugin({
 
       return req
     })
+
+    api.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        const originalRequest = error.config as
+          | RetryAxiosRequestConfig
+          | undefined
+
+        if (
+          error.response?.status !== 401 ||
+          !originalRequest ||
+          originalRequest._retry ||
+          isAuthEndpoint(originalRequest.url)
+        ) {
+          return Promise.reject(error)
+        }
+
+        if (!getRefreshToken()) {
+          clearAuthTokens()
+          syncAuthState(null)
+          return Promise.reject(error)
+        }
+
+        originalRequest._retry = true
+
+        const newAccessToken = await requestRefresh()
+        if (!newAccessToken) {
+          return Promise.reject(error)
+        }
+
+        originalRequest.headers.set('Authorization', `Bearer ${newAccessToken}`)
+        return api(originalRequest)
+      }
+    )
 
     return {
       provide: {
