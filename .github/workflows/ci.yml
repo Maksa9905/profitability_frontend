@@ -34,4 +34,11 @@ jobs:
 
       - run: pnpm run typecheck
 
-      - run: pnpm run test
+      - run: pnpm run test:coverage
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: unit-coverage-report
+          path: coverage/
+          retention-days: 14

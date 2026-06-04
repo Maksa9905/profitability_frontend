@@ -1,6 +1,6 @@
-import { defineVitestProject } from '@nuxt/test-utils/config'
+import { defineVitestConfig } from '@nuxt/test-utils/config'
 
-export default defineVitestProject({
+export default defineVitestConfig({
   test: {
     environment: 'nuxt',
     setupFiles: ['vitest-setup.ts'],
@@ -10,6 +10,13 @@ export default defineVitestProject({
       '**/*.visual.spec.ts',
       'playwright.config.ts'
     ],
-    include: ['app/**/*.spec.ts']
+    include: ['app/**/*.spec.ts'],
+    coverage: {
+      provider: 'v8',
+      reportsDirectory: './coverage',
+      reporter: ['text', 'text-summary', 'html', 'lcov'],
+      include: ['app/**/*.{ts,vue}'],
+      exclude: ['app/**/*.spec.ts', 'app/shared/api/generated/**', '**/*.d.ts']
+    }
   }
 })

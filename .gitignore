@@ -16,6 +16,9 @@ logs
 .api-docs-html/
 app/shared/api/generated/
 
+# Test coverage
+coverage
+
 # Misc
 .DS_Store
 .fleet
