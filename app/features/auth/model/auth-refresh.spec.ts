@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { createAuthRefreshHandler } from './auth-refresh'
+import type { AuthTokenStorageMutations } from './auth-tokens'
 
 const authTokensMock = vi.hoisted(() => ({
   setAuthTokens: vi.fn(),
@@ -8,16 +9,7 @@ const authTokensMock = vi.hoisted(() => ({
   syncAuthState: vi.fn()
 }))
 
-vi.mock('./auth-tokens', async (importOriginal) => {
-  const original = await importOriginal<typeof import('./auth-tokens')>()
-
-  return {
-    ...original,
-    setAuthTokens: authTokensMock.setAuthTokens,
-    clearAuthTokens: authTokensMock.clearAuthTokens,
-    syncAuthState: authTokensMock.syncAuthState
-  }
-})
+const tokenStorage = authTokensMock as AuthTokenStorageMutations
 
 describe('createAuthRefreshHandler', () => {
   beforeEach(() => {
@@ -31,7 +23,7 @@ describe('createAuthRefreshHandler', () => {
       accessToken: 'new-access',
       refreshToken: 'new-refresh'
     })
-    const requestRefresh = createAuthRefreshHandler(refreshFn)
+    const requestRefresh = createAuthRefreshHandler(refreshFn, tokenStorage)
 
     await expect(requestRefresh()).resolves.toBe('new-access')
 
@@ -59,7 +51,7 @@ describe('createAuthRefreshHandler', () => {
           }
         )
     )
-    const requestRefresh = createAuthRefreshHandler(refreshFn)
+    const requestRefresh = createAuthRefreshHandler(refreshFn, tokenStorage)
 
     const firstCall = requestRefresh()
     const secondCall = requestRefresh()
@@ -77,7 +69,10 @@ describe('createAuthRefreshHandler', () => {
   })
 
   it('очищает сессию, если refresh вернул null', async () => {
-    const requestRefresh = createAuthRefreshHandler(async () => null)
+    const requestRefresh = createAuthRefreshHandler(
+      async () => null,
+      tokenStorage
+    )
 
     await expect(requestRefresh()).resolves.toBeNull()
 
@@ -88,7 +83,7 @@ describe('createAuthRefreshHandler', () => {
   it('очищает сессию при ошибке refresh', async () => {
     const requestRefresh = createAuthRefreshHandler(async () => {
       throw new Error('refresh failed')
-    })
+    }, tokenStorage)
 
     await expect(requestRefresh()).resolves.toBeNull()
 

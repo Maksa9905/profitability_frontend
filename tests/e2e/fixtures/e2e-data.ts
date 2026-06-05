@@ -35,7 +35,7 @@ export type ToolCase<TInput> = {
   expectedResults: Record<string, string>
 }
 
-export const generateE2eUser: E2EUser = () => ({
+export const generateE2eUser = (): E2EUser => ({
   email: `e2e_${Date.now()}@example.com`,
   password: 'E2ePassword_123'
 })

@@ -4,12 +4,6 @@ import axios, {
 } from 'axios'
 
 import { createAuthRefreshHandler } from '~/features/auth/model/auth-refresh'
-import {
-  clearAuthTokens,
-  getAccessToken,
-  getRefreshToken,
-  syncAuthState
-} from '~/features/auth/model/auth-tokens'
 import type { components } from '~/shared/api/generated/auth'
 
 type JwtResponse = components['schemas']['JwtResponse']
@@ -34,8 +28,10 @@ function isAuthEndpoint(url?: string): boolean {
 
 export default defineNuxtPlugin({
   name: 'api-axios',
+  dependsOn: ['auth-tokens'],
   setup() {
     const config = useRuntimeConfig()
+    const authTokenStorage = useNuxtApp().$authTokenStorage
     const baseURL = String(config.public.apiBaseUrl).replace(/\/$/, '')
 
     const api: AxiosInstance = axios.create({
@@ -59,7 +55,7 @@ export default defineNuxtPlugin({
     })
 
     const requestRefresh = createAuthRefreshHandler(async () => {
-      const refreshToken = getRefreshToken()
+      const refreshToken = authTokenStorage.getRefreshToken()
       if (!refreshToken) {
         return null
       }
@@ -72,11 +68,11 @@ export default defineNuxtPlugin({
         accessToken: data.accessToken,
         refreshToken: data.refreshToken
       }
-    })
+    }, authTokenStorage)
 
     const userId = config.public.devAuthUserId
     api.interceptors.request.use((req) => {
-      const token = getAccessToken()
+      const token = authTokenStorage.getAccessToken()
 
       if (token) {
         req.headers.set('Authorization', `Bearer ${token}`)
@@ -105,9 +101,9 @@ export default defineNuxtPlugin({
           return Promise.reject(error)
         }
 
-        if (!getRefreshToken()) {
-          clearAuthTokens()
-          syncAuthState(null)
+        if (!authTokenStorage.getRefreshToken()) {
+          authTokenStorage.clearAuthTokens()
+          authTokenStorage.syncAuthState(null)
           return Promise.reject(error)
         }
 

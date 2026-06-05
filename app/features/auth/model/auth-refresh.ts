@@ -1,13 +1,11 @@
-import {
-  clearAuthTokens,
-  setAuthTokens,
-  syncAuthState,
-  type AuthTokens
-} from './auth-tokens'
+import type { AuthTokenStorageMutations, AuthTokens } from './auth-tokens'
 
 type RefreshFn = () => Promise<AuthTokens | null>
 
-export function createAuthRefreshHandler(refreshFn: RefreshFn) {
+export function createAuthRefreshHandler(
+  refreshFn: RefreshFn,
+  tokens: AuthTokenStorageMutations
+) {
   let refreshPromise: Promise<string | null> | null = null
 
   return (): Promise<string | null> => {
@@ -17,17 +15,17 @@ export function createAuthRefreshHandler(refreshFn: RefreshFn) {
           const result = await refreshFn()
 
           if (!result) {
-            clearAuthTokens()
-            syncAuthState(null)
+            tokens.clearAuthTokens()
+            tokens.syncAuthState(null)
             return null
           }
 
-          setAuthTokens(result)
-          syncAuthState(result)
+          tokens.setAuthTokens(result)
+          tokens.syncAuthState(result)
           return result.accessToken
         } catch {
-          clearAuthTokens()
-          syncAuthState(null)
+          tokens.clearAuthTokens()
+          tokens.syncAuthState(null)
           return null
         } finally {
           refreshPromise = null

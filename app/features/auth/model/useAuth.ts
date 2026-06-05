@@ -1,13 +1,9 @@
 import type { components } from '~/shared/api/generated/auth'
 
 import {
-  clearAuthTokens,
-  getAccessToken,
-  getRefreshToken,
-  setAuthTokens,
-  syncAuthState,
   AUTH_REFRESH_TOKEN_STATE_KEY,
   AUTH_TOKEN_STATE_KEY,
+  useAuthTokenStorage,
   type AuthTokens
 } from './auth-tokens'
 
@@ -60,19 +56,20 @@ function parseJwtResponse(data: unknown): AuthTokens | null {
 
 export function useAuth() {
   const { $api } = useNuxtApp()
+  const authTokenStorage = useAuthTokenStorage()
   const token = useState<string | null>(AUTH_TOKEN_STATE_KEY, () =>
-    getAccessToken()
+    authTokenStorage.getAccessToken()
   )
   const refreshToken = useState<string | null>(
     AUTH_REFRESH_TOKEN_STATE_KEY,
-    () => getRefreshToken()
+    () => authTokenStorage.getRefreshToken()
   )
   const initialized = useState<boolean>('auth-initialized', () => false)
 
   const isAuthenticated = computed(() => Boolean(token.value))
 
   const applyTokens = (tokens: AuthTokens) => {
-    setAuthTokens(tokens)
+    authTokenStorage.setAuthTokens(tokens)
     token.value = tokens.accessToken
     refreshToken.value = tokens.refreshToken
   }
@@ -82,8 +79,8 @@ export function useAuth() {
       return
     }
 
-    token.value = getAccessToken()
-    refreshToken.value = getRefreshToken()
+    token.value = authTokenStorage.getAccessToken()
+    refreshToken.value = authTokenStorage.getRefreshToken()
     initialized.value = true
   }
 
@@ -120,7 +117,7 @@ export function useAuth() {
   }
 
   const refreshTokens = async (): Promise<boolean> => {
-    const currentRefreshToken = getRefreshToken()
+    const currentRefreshToken = authTokenStorage.getRefreshToken()
     if (!currentRefreshToken) {
       return false
     }
@@ -146,10 +143,10 @@ export function useAuth() {
   }
 
   const logout = () => {
-    clearAuthTokens()
+    authTokenStorage.clearAuthTokens()
     token.value = null
     refreshToken.value = null
-    syncAuthState(null)
+    authTokenStorage.syncAuthState(null)
   }
 
   return {

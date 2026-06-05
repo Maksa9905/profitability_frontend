@@ -42,29 +42,9 @@ export function writeTokenToClient(
   localStorage.removeItem(storageKey)
 }
 
-export function getAccessToken(): string | null {
-  const accessCookie = useCookie<string | null>(AUTH_TOKEN_COOKIE_KEY, {
-    sameSite: 'lax'
-  })
-
-  return readTokenFromClient(AUTH_TOKEN_STORAGE_KEY, accessCookie.value)
-}
-
-export function getRefreshToken(): string | null {
-  const refreshCookie = useCookie<string | null>(
-    AUTH_REFRESH_TOKEN_COOKIE_KEY,
-    {
-      sameSite: 'lax'
-    }
-  )
-
-  return readTokenFromClient(
-    AUTH_REFRESH_TOKEN_STORAGE_KEY,
-    refreshCookie.value
-  )
-}
-
-export function setAuthTokens(tokens: AuthTokens | null): void {
+/** Cookies и токены — только из setup / plugin (не из axios interceptors). */
+export function useAuthTokenStorage() {
+  const nuxtApp = useNuxtApp()
   const accessCookie = useCookie<string | null>(AUTH_TOKEN_COOKIE_KEY, {
     sameSite: 'lax'
   })
@@ -75,27 +55,52 @@ export function setAuthTokens(tokens: AuthTokens | null): void {
     }
   )
 
-  if (tokens) {
-    accessCookie.value = tokens.accessToken
-    refreshCookie.value = tokens.refreshToken
-    writeTokenToClient(AUTH_TOKEN_STORAGE_KEY, tokens.accessToken)
-    writeTokenToClient(AUTH_REFRESH_TOKEN_STORAGE_KEY, tokens.refreshToken)
-    return
+  const getAccessToken = (): string | null =>
+    readTokenFromClient(AUTH_TOKEN_STORAGE_KEY, accessCookie.value)
+
+  const getRefreshToken = (): string | null =>
+    readTokenFromClient(AUTH_REFRESH_TOKEN_STORAGE_KEY, refreshCookie.value)
+
+  const setAuthTokens = (tokens: AuthTokens | null): void => {
+    if (tokens) {
+      accessCookie.value = tokens.accessToken
+      refreshCookie.value = tokens.refreshToken
+      writeTokenToClient(AUTH_TOKEN_STORAGE_KEY, tokens.accessToken)
+      writeTokenToClient(AUTH_REFRESH_TOKEN_STORAGE_KEY, tokens.refreshToken)
+      return
+    }
+
+    accessCookie.value = null
+    refreshCookie.value = null
+    writeTokenToClient(AUTH_TOKEN_STORAGE_KEY, null)
+    writeTokenToClient(AUTH_REFRESH_TOKEN_STORAGE_KEY, null)
   }
 
-  accessCookie.value = null
-  refreshCookie.value = null
-  writeTokenToClient(AUTH_TOKEN_STORAGE_KEY, null)
-  writeTokenToClient(AUTH_REFRESH_TOKEN_STORAGE_KEY, null)
+  const clearAuthTokens = (): void => {
+    setAuthTokens(null)
+  }
+
+  const syncAuthState = (tokens: AuthTokens | null): void => {
+    nuxtApp.runWithContext(() => {
+      useState<string | null>(AUTH_TOKEN_STATE_KEY).value =
+        tokens?.accessToken ?? null
+      useState<string | null>(AUTH_REFRESH_TOKEN_STATE_KEY).value =
+        tokens?.refreshToken ?? null
+    })
+  }
+
+  return {
+    getAccessToken,
+    getRefreshToken,
+    setAuthTokens,
+    clearAuthTokens,
+    syncAuthState
+  }
 }
 
-export function clearAuthTokens(): void {
-  setAuthTokens(null)
-}
+export type AuthTokenStorage = ReturnType<typeof useAuthTokenStorage>
 
-export function syncAuthState(tokens: AuthTokens | null): void {
-  useState<string | null>(AUTH_TOKEN_STATE_KEY).value =
-    tokens?.accessToken ?? null
-  useState<string | null>(AUTH_REFRESH_TOKEN_STATE_KEY).value =
-    tokens?.refreshToken ?? null
-}
+export type AuthTokenStorageMutations = Pick<
+  AuthTokenStorage,
+  'setAuthTokens' | 'clearAuthTokens' | 'syncAuthState'
+>
