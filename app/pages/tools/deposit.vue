@@ -16,6 +16,7 @@ import {
   PrimaryColorProvider
 } from '~/features/dynamical-primary-color'
 import { useAuth } from '~/features/auth'
+import { useDepositProfitWithMacro } from '~/features/profit-with-macro'
 import {
   formatHistoryNumber,
   formatHistoryPercent,
@@ -34,6 +35,7 @@ const { isAuthenticated, init } = useAuth()
 
 init()
 const { data: depositData, pending: depositPending } = useDepositCalculate()
+const { macroRealProfit } = useDepositProfitWithMacro()
 const { data: depositsHistory, pending: depositsHistoryPending } =
   useDepositList()
 const isDepositsHistoryRefreshing = ref(false)
@@ -144,6 +146,7 @@ const handleSave = async () => {
           :frequency="depositData?.frequency ?? 'MONTHLY'"
           :capitalization="capitalizationFromQuery"
           :capital-growth-graph="depositData?.capitalGrowthGraph ?? []"
+          :macro-real-profit="macroRealProfit"
         />
       </template>
     </InvestmentTool>

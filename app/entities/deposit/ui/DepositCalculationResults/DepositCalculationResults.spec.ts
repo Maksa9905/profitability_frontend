@@ -8,6 +8,7 @@ import ru from '../../../../../i18n/locales/ru.json'
 import en from '../../../../../i18n/locales/en.json'
 
 import DepositCalculationResults from './DepositCalculationResults.vue'
+import { formatHistoryNumber } from '~/features/investment-tools'
 
 vi.mock('~/shared/lib/useMediaQuery', () => ({
   useMediaQuery: () => ref(false)
@@ -72,6 +73,32 @@ describe('DepositCalculationResults', () => {
     })
 
     expect(w.text()).toContain('с учётом капит')
+  })
+
+  it('показывает реальную прибыль при переданных macro-данных', () => {
+    const w = mount(DepositCalculationResults, {
+      props: {
+        item: ResultItemContainer,
+        finalAmount: 116_000,
+        accruedInterest: 16_000,
+        effectiveRate: 16,
+        frequency: 'MONTHLY',
+        capitalization: false,
+        capitalGrowthGraph: [],
+        macroRealProfit: 8_000
+      },
+      global: {
+        plugins: [i18n],
+        stubs: {
+          ClientOnly: { template: '<div><slot /></div>' },
+          VChart: true
+        }
+      }
+    })
+
+    const text = w.text()
+    expect(text).toContain(formatHistoryNumber(8_000, 'ru'))
+    expect(text).toContain('текущей инфляции')
   })
 
   it('не показывает график без массива капитала', () => {

@@ -59,6 +59,8 @@ const invest = JSON.parse(
   readFileSync(join(root, 'openapi', 'invest.json'), 'utf8')
 )
 
+const cbr = JSON.parse(readFileSync(join(root, 'openapi', 'cbr.json'), 'utf8'))
+
 writeFileSync(
   join(outDir, 'auth.html'),
   buildHtml('OpenAPI — Auth', auth),
@@ -70,5 +72,8 @@ writeFileSync(
   'utf8'
 )
 
+writeFileSync(join(outDir, 'cbr.html'), buildHtml('OpenAPI - CBR', cbr))
+
 console.log(`generate-api-docs-html: wrote ${join(outDir, 'auth.html')}`)
 console.log(`generate-api-docs-html: wrote ${join(outDir, 'invest.html')}`)
+console.log(`generate-api-docs-html: wrote ${join(outDir, 'cbr.html')}`)

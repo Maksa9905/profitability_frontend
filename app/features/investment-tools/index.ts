@@ -6,6 +6,7 @@ export { default as InvestmentHistory } from './ui/InvestmentHistory'
 
 export { toolsIcons } from './lib/toolsIcons'
 export {
+  formatHistoryDate,
   formatHistoryNumber,
   formatHistoryPercent
 } from './lib/historyFormatters'

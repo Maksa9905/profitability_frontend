@@ -58,6 +58,14 @@
         "effectiveRate": "Effective rate",
         "capitalizationNote": "incl. capitalization"
       },
+      "macro": {
+        "title": "Adjusted for inflation",
+        "realProfit": "Real profit",
+        "realProfitPeriod": "per year at current inflation",
+        "realRate": "Real rate",
+        "inflationData": "Inflation data as of {date}",
+        "disclaimer": "Annual yield estimate at current inflation. Not a forecast for the full deposit term."
+      },
       "chart": {
         "title": "Capital over time",
         "axisMonth": "Month",

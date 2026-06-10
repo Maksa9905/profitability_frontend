@@ -2,6 +2,7 @@
 import type { Component } from 'vue'
 
 import { resolveUiPrimaryForChart } from '~/features/dynamical-primary-color'
+import { formatHistoryNumber } from '~/features/investment-tools'
 import { useDepositCapitalLineChart } from '../../model/useDepositCapitalLineChart'
 
 const props = withDefaults(
@@ -13,11 +14,15 @@ const props = withDefaults(
     frequency: string
     capitalization: boolean
     capitalGrowthGraph?: number[]
+    macroRealProfit?: number | null
   }>(),
   {
-    capitalGrowthGraph: () => []
+    capitalGrowthGraph: () => [],
+    macroRealProfit: null
   }
 )
+
+const { locale } = useI18n()
 
 const capitalGrowthGraphRef = toRef(props, 'capitalGrowthGraph')
 const chartLineColor = ref('#4f39f6')
@@ -70,6 +75,14 @@ onMounted(() => {
     >
     </component>
 
+    <component
+      :is="item"
+      class="calculation-results-item deposit-macro-results-item"
+      :title="$t('toolItem.deposits.macro.realProfit')"
+      :value="`${formatHistoryNumber(macroRealProfit || 0, locale)} ₽`"
+      :description="$t('toolItem.deposits.macro.realProfitPeriod')"
+    />
+
     <div v-if="capitalGrowthGraph.length > 0" class="deposit-capital-chart">
       <h3 class="deposit-capital-chart-title">
         {{ $t('toolItem.deposits.chart.title') }}
@@ -90,7 +103,7 @@ onMounted(() => {
 <style scoped>
 .deposit-calculation-results {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: calc(var(--spacing) * 4);
 }
 

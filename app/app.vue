@@ -114,7 +114,7 @@ useSiteSeo()
   <UApp>
     <UHeader>
       <template #left>
-        <NuxtLink to="/stocks">
+        <NuxtLink to="/">
           <Logotype />
         </NuxtLink>
       </template>

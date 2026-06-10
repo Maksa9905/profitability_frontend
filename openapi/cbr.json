@@ -1,0 +1,124 @@
+{
+  "openapi": "3.1.0",
+  "info": { "title": "OpenAPI definition", "version": "v0" },
+  "servers": [
+    { "url": "http://172.19.0.6:8083", "description": "Generated server url" }
+  ],
+  "paths": {
+    "/api/cbr/latest": {
+      "get": {
+        "tags": ["cbr-controller"],
+        "operationId": "getLatest",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/MacroIndicatorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cbr/history": {
+      "get": {
+        "tags": ["cbr-controller"],
+        "operationId": "getHistory",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "format": "date" }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "format": "date" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MacroIndicatorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cbr/deposit-rate": {
+      "get": {
+        "tags": ["cbr-json-controller"],
+        "operationId": "depositRate",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/CategoryDto" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cbr/categories": {
+      "get": {
+        "tags": ["cbr-json-controller"],
+        "operationId": "categories",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/CategoryDto" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "MacroIndicatorResponse": {
+        "type": "object",
+        "properties": {
+          "date": { "type": "string", "format": "date" },
+          "keyRate": { "type": "number", "format": "double" },
+          "inflation": { "type": "number", "format": "double" },
+          "target": { "type": "number", "format": "double" }
+        },
+        "required": ["date", "inflation", "keyRate", "target"]
+      },
+      "CategoryDto": {
+        "type": "object",
+        "properties": {
+          "category_id": { "type": "integer", "format": "int32" },
+          "category_name": { "type": "string" },
+          "indicator_id": { "type": "integer", "format": "int32" },
+          "indicator_name": { "type": "string" },
+          "link": { "type": "string" },
+          "begin_dt": { "type": "integer", "format": "int32" },
+          "end_dt": { "type": "integer", "format": "int32" },
+          "indicator_parent": { "type": "integer", "format": "int32" }
+        }
+      }
+    }
+  }
+}
